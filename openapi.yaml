@@ -141,18 +141,16 @@ paths:
         content:
           application/json:
             schema:
-              type: object
-              required: [partyID, username, partyAPIKey]
-              properties:
-                partyID:
-                  type: string
-                username:
-                  type: string
-                partyAPIKey:
-                  type: string
               oneOf:
-                - required: [MsidAmsidsToUpdate]
+                - type: object
+                  required: [partyID, username, partyAPIKey, MsidAmsidsToUpdate]
                   properties:
+                    partyID:
+                      type: string
+                    username:
+                      type: string
+                    partyAPIKey:
+                      type: string
                     MsidAmsidsToUpdate:
                       type: array
                       items:
@@ -163,8 +161,15 @@ paths:
                           data:
                             type: string
                             description: "MSIDId,EffectiveToSettlementDate"
-                - required: [ConsentFlagsToUpdate]
+                - type: object
+                  required: [partyID, username, partyAPIKey, ConsentFlagsToUpdate]
                   properties:
+                    partyID:
+                      type: string
+                    username:
+                      type: string
+                    partyAPIKey:
+                      type: string
                     ConsentFlagsToUpdate:
                       type: array
                       items:
