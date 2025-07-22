@@ -31,11 +31,9 @@ paths:
                 effectiveFromDate:
                   type: string
                   pattern: '^\d{8}$'
-                  description: Oldest date (YYYYMMDD)
                 effectiveToDate:
                   type: string
                   pattern: '^\d{8}$'
-                  description: Latest date (YYYYMMDD)
                 lastModifiedDate:
                   type: string
                   pattern: '^\d{8}$'
@@ -51,6 +49,10 @@ paths:
                 example:
                   status: "success"
                   data: []
+        '400':
+          $ref: '#/components/responses/InvalidParameters'
+        '403':
+          $ref: '#/components/responses/AuthorizationError'
 
   /insert:
     post:
@@ -76,7 +78,7 @@ paths:
                     type: object
                     properties:
                       row:
-                        type: integer
+                        type: string
                       data:
                         type: object
                         properties:
@@ -125,11 +127,15 @@ paths:
                 type: object
                 example:
                   status: "success"
-                  MsidAmsidRequestID: "FLEXTRCY_P0278_20250716141743_Demo"
+                  jobId: "abc123"
+        '400':
+          $ref: '#/components/responses/InvalidParameters'
+        '403':
+          $ref: '#/components/responses/AuthorizationError'
 
   /update:
     post:
-      summary: Update MSID records
+      summary: Update MSID records either {Effective From Date} Or {Customer Consent Flag} independently
       requestBody:
         required: true
         content:
@@ -144,35 +150,31 @@ paths:
                   type: string
                 partyAPIKey:
                   type: string
-                MsidAmsidsToUpdate:
-                  type: array
-                  description: List of MSIDs to update
-                  items:
-                    type: object
-                    properties:
-                      row:
-                        type: integer
-                      data:
+              oneOf:
+                - required: [MsidAmsidsToUpdate]
+                  properties:
+                    MsidAmsidsToUpdate:
+                      type: array
+                      items:
                         type: object
                         properties:
-                          MSIDId:
+                          row:
                             type: string
-                            maxLength: 18
-                          effectiveToSettlementDate:
+                          data:
                             type: string
-                            format: date
-                          MSID:
+                            description: Format: "MSIDId,effectiveToSettlementDate"
+                - required: [ConsentFlagsToUpdate]
+                  properties:
+                    ConsentFlagsToUpdate:
+                      type: array
+                      items:
+                        type: object
+                        properties:
+                          row:
                             type: string
-                            maxLength: 13
-                          customerConsentFlag:
+                          data:
                             type: string
-                            enum: [Y, N]
-                          consentEffectiveFromDate:
-                            type: string
-                            format: date
-                          flowDirection:
-                            type: string
-                            enum: [Import, Export]
+                            description: Format: "MSIDId,MSID,ConsentFlag,ConsentEffectiveFromDate,FlowDirection"
       responses:
         '200':
           description: MSIDs updated successfully
@@ -183,3 +185,39 @@ paths:
                 example:
                   status: "success"
                   updatedRecords: 3
+        '400':
+          $ref: '#/components/responses/InvalidParameters'
+        '403':
+          $ref: '#/components/responses/AuthorizationError'
+
+components:
+  responses:
+    InvalidParameters:
+      description: Payload does not conform to API specification
+      content:
+        application/json:
+          schema:
+            type: object
+            example:
+              message: "Invalid parameters, please check the API documentation"
+
+    AuthorizationError:
+      description: Authorization failure (invalid API key or unauthorized username)
+      content:
+        application/json:
+          schema:
+            type: object
+            oneOf:
+              - example:
+                  message: "The provided username and party combination is not authorized."
+              - example:
+                  message: "The provided username and partyID combination is not authorized."
+
+    InvalidEndpoint:
+      description: Operation type is invalid
+      content:
+        application/json:
+          schema:
+            type: object
+            example:
+              message: "Invalid endpoint. Accepted endpoints are: Read, Insert, Update"
