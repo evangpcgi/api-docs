@@ -75,63 +75,58 @@ paths:
                   type: string
                 MsidAmsidsToInsert:
                   type: array
-                  description: List of MSIDs to insert
+                  description: List of MSIDs to insert. Each item has a row number and a CSV string in `data`
                   items:
                     type: object
                     properties:
                       row:
                         type: string
+                        description: "Row index"
                       data:
-                        type: object
-                        properties:
-                          BMUnitID:
-                            type: string
-                            maxLength: 11
-                          GSPGroup:
-                            type: string
-                            maxLength: 2
-                          effectiveFromMSIDP:
-                            type: string
-                            format: date
-                          effectiveToMSIDP:
-                            type: string
-                            format: date
-                          importMSID:
-                            type: string
-                            maxLength: 13
-                          importMSIDCustomerConsentFlag:
-                            type: string
-                            enum: [Y, N]
-                          effectiveFromICCF:
-                            type: string
-                            format: date
-                          effectiveToICCF:
-                            type: string
-                            format: date
-                          exportMSID:
-                            type: string
-                            maxLength: 13
-                          exportMSIDCustomerConsentFlag:
-                            type: string
-                            enum: [Y, N]
-                          effectiveFromECCF:
-                            type: string
-                            format: date
-                          effectiveToECCF:
-                            type: string
-                            format: date
+                        type: string
+                        description: |
+                          Comma Separated Values string with MSID data fields in order (*)mandatory:
+                          1. BMUnitID (max 11 chars) *
+                          2. GSPGroup (2 chars) *
+                          3. Effective From Settlement Date {MSIDP} (DD/MM/YYYY) *
+                          4. Effective To Settlement Date {MSIDP} (DD/MM/YYYY) *
+                          5. Import MSID (13 chars) *
+                          6. Import MSID Customer Consent Flag (Y/N) *
+                          7. Effective From Settlement Date {ICCF} (DD/MM/YYYY) *
+                          8. Effective To Settlement Date {ICCF} (DD/MM/YYYY) *
+                          9. Export MSID (13 chars)
+                          10. Export MSID Customer Consent Flag (Y/N)
+                          11. Effective From Settlement Date {ECCF} (DD/MM/YYYY)
+                          12. Effective To Settlement Date {ECCF} (DD/MM/YYYY)
+                        example: "V__AFLEX001,_L,01/06/2025,10/06/2025,2242026341161,Y,03/06/2025,10/12/2025,3663328556786,Y,03/06/2025,10/06/2025"
       responses:
         '200':
-          description: MSIDs inserted successfully
+          description: MSIDs processed successfully and accepted for insertion on the system
           content:
             application/json:
               schema:
                 type: object
                 example:
-                  status: "success"
-                  jobId: "abc123"
+                  status: "Accepted"
+                  requestId: "FLEXTRCY_MSID-PAIR-ALLOC-CREATE_20250331151154"
+          '202':
+            description: Partial success with errors during insert operation
+            content:
+              application/json:
+                schema:
+                  type: object
+                  example:
+                    status: "Accepted_with_errors"
+                    requestId: "FLEXTRCY_MSID-PAIR-ALLOC-CREATE_20250331151154"
+                    errors:
+                      - row: "1"
+                        data: "The MSID Pair Effective From Date must be at least 1 Working Day in the future."
         '400':
-          $ref: '#/components/responses/InvalidParameters'
+          oneOf:
+          - $ref: '#/components/schemas/InvalidParameters'
+          - $ref: '#/components/schemas/LimitErrorReached'
+          - $ref: '#/components/schemas/PayloadLimit'
+          - $ref: '#/components/schemas/IncorrectParameters'
         '403':
           $ref: '#/components/responses/AuthorizationError'
 
@@ -182,19 +177,35 @@ paths:
                             type: string
                           data:
                             type: string
-                            description: "MSIDId,MSID,ConsentFlag,ConsentEffectiveFromDate,FlowDirection"
+                            description: "MSIDId,MPAN,ConsentFlag,ConsentEffectiveFromDate,FlowDirection"
       responses:
         '200':
-          description: MSIDs updated successfully
+          description: MSIDs processed successfully and accepted for insertion on the system
           content:
             application/json:
               schema:
                 type: object
                 example:
-                  status: "success"
-                  updatedRecords: 3
+                  status: "Accepted"
+                  requestId: "FLEXTRCY_MSID-PAIR-ALLOC-UPDATE_20250331151154"
+          '202':
+            description: Partial success with errors during update operation
+            content:
+              application/json:
+                schema:
+                  type: object
+                  example:
+                    status: "Accepted_with_errors"
+                    requestId: "FLEXTRCY_MSID-PAIR-ALLOC-UPDATE_20250331151154"
+                    errors:
+                      - row: "2"
+                        data: "MSID Pair must be in Pending Status 'S'"
         '400':
-          $ref: '#/components/responses/InvalidParameters'
+          oneOf:
+          - $ref: '#/components/schemas/InvalidParameters'
+          - $ref: '#/components/schemas/LimitErrorReached'
+          - $ref: '#/components/schemas/PayloadLimit'
+          - $ref: '#/components/schemas/IncorrectParameters'
         '403':
           $ref: '#/components/responses/AuthorizationError'
 
@@ -229,3 +240,30 @@ components:
             type: object
             example:
               message: "Invalid endpoint. Accepted endpoints are: Read, Insert, Update"
+
+    LimitErrorReached:
+      description: Errors in the payload exceeds the limit defined inside Salesforce (500)
+      content:
+        application/json:
+          schema:
+            type: object
+            example:
+              message: "Wrong Payload: Maximum number of row errors reached (stored_parameter_number 500)"
+
+    PayloadLimit:
+      description: Errors in the payload, volume of records exceeds the Salesforce stored parameter limit (2000)
+      content:
+        application/json:
+          schema:
+            type: object
+            example:
+              message: "Payload too large, exceeded maximum number of records allowed in Update API"
+
+    IncorrectParameters:
+      description: Errors in the payload, required parameters are not provided in the payload
+      content:
+        application/json:
+          schema:
+            type: object
+            example:
+              message: "Incorrect number of parameters"
