@@ -48,8 +48,18 @@ paths:
               schema:
                 type: object
                 example:
-                  status: "success"
-                  data: []
+                  data:
+                    SVA_BM_Unit: "V__PFLEX001"
+                    Pending_Flag: "R"
+                    MSID_Pair_ID: "a0sAe000001xJvhIAE"
+                    Last_Modified_Date: "2025-07-02 14:39:47"
+                    Import_Reject_Reasons: "MSID does not exist"
+                    Import_Metering_System: "4883772918844"
+                    GSP_Group: "_P"
+                    Export_Reject_Reasons: ""
+                    Export_Metering_System: ""
+                    Effective_To_Settlement_Date: "02/07/2025"
+                    Effective_From_Settlement_Date: "29/04/2025"
         '400':
           $ref: '#/components/responses/InvalidParameters'
         '403':
