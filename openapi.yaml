@@ -7,7 +7,8 @@ info:
 paths:
   /read:
     post:
-      summary: Retrieve MSID records
+      summary: /Read Endpoint
+      description: Retrieve existing Msids in the system given the filter criteria
       requestBody:
         required: true
         content:
@@ -56,7 +57,8 @@ paths:
 
   /insert:
     post:
-      summary: Insert MSID records
+      summary: /Insert Endpoint
+      description: Submit Msid for business validations and insertion on the system
       requestBody:
         required: true
         content:
@@ -135,7 +137,8 @@ paths:
 
   /update:
     post:
-      summary: Update MSID records either {Effective From Date} Or {Customer Consent Flag} independently
+      summary: /Update Endpoint 
+      description: Update {Effective From Date} Or {Customer Consent Flag} independently
       requestBody:
         required: true
         content:
