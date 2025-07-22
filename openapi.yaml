@@ -1,11 +1,185 @@
-openapi: 3.0.0
+openapi: 3.0.3
 info:
-  title: Exemplo de API
+  title: MSID Management API
+  description: API for reading, inserting, and updating MSID records. All endpoints require authorization parameters in the request body.
   version: 1.0.0
+
 paths:
-  /clientes:
-    get:
-      summary: Lista todos os clientes
+  /read:
+    post:
+      summary: Retrieve MSID records
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [partyID, username, partyAPIKey]
+              properties:
+                partyID:
+                  type: string
+                username:
+                  type: string
+                partyAPIKey:
+                  type: string
+                pendingFlag:
+                  type: string
+                  enum: [D, P, PA, S, R]
+                SVABMUnit:
+                  type: string
+                  description: BM Unit Id (V__AFLEX003)
+                effectiveFromDate:
+                  type: string
+                  pattern: '^\d{8}$'
+                  description: Oldest date (YYYYMMDD)
+                effectiveToDate:
+                  type: string
+                  pattern: '^\d{8}$'
+                  description: Latest date (YYYYMMDD)
+                lastModifiedDate:
+                  type: string
+                  pattern: '^\d{8}$'
+                MsidAmsidRequestID:
+                  type: string
       responses:
         '200':
-          description: OK
+          description: List of MSIDs matching filters
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  status: "success"
+                  data: []
+
+  /insert:
+    post:
+      summary: Insert MSID records
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [partyID, username, partyAPIKey]
+              properties:
+                partyID:
+                  type: string
+                username:
+                  type: string
+                partyAPIKey:
+                  type: string
+                MsidAmsidsToInsert:
+                  type: array
+                  description: List of MSIDs to insert
+                  items:
+                    type: object
+                    properties:
+                      row:
+                        type: integer
+                      data:
+                        type: object
+                        properties:
+                          BMUnitID:
+                            type: string
+                            maxLength: 11
+                          GSPGroup:
+                            type: string
+                            maxLength: 2
+                          effectiveFromMSIDP:
+                            type: string
+                            format: date
+                          effectiveToMSIDP:
+                            type: string
+                            format: date
+                          importMSID:
+                            type: string
+                            maxLength: 13
+                          importMSIDCustomerConsentFlag:
+                            type: string
+                            enum: [Y, N]
+                          effectiveFromICCF:
+                            type: string
+                            format: date
+                          effectiveToICCF:
+                            type: string
+                            format: date
+                          exportMSID:
+                            type: string
+                            maxLength: 13
+                          exportMSIDCustomerConsentFlag:
+                            type: string
+                            enum: [Y, N]
+                          effectiveFromECCF:
+                            type: string
+                            format: date
+                          effectiveToECCF:
+                            type: string
+                            format: date
+      responses:
+        '200':
+          description: MSIDs inserted successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  status: "success"
+                  MsidAmsidRequestID: "FLEXTRCY_P0278_20250716141743_Demo"
+
+  /update:
+    post:
+      summary: Update MSID records
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [partyID, username, partyAPIKey]
+              properties:
+                partyID:
+                  type: string
+                username:
+                  type: string
+                partyAPIKey:
+                  type: string
+                MsidAmsidsToUpdate:
+                  type: array
+                  description: List of MSIDs to update
+                  items:
+                    type: object
+                    properties:
+                      row:
+                        type: integer
+                      data:
+                        type: object
+                        properties:
+                          MSIDId:
+                            type: string
+                            maxLength: 18
+                          effectiveToSettlementDate:
+                            type: string
+                            format: date
+                          MSID:
+                            type: string
+                            maxLength: 13
+                          customerConsentFlag:
+                            type: string
+                            enum: [Y, N]
+                          consentEffectiveFromDate:
+                            type: string
+                            format: date
+                          flowDirection:
+                            type: string
+                            enum: [Import, Export]
+      responses:
+        '200':
+          description: MSIDs updated successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  status: "success"
+                  updatedRecords: 3
