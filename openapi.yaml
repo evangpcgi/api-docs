@@ -162,7 +162,7 @@ paths:
                             type: string
                           data:
                             type: string
-                            description: Format: "MSIDId,effectiveToSettlementDate"
+                            description: Format:"MSIDId,EffectiveToSettlementDate"
                 - required: [ConsentFlagsToUpdate]
                   properties:
                     ConsentFlagsToUpdate:
@@ -174,7 +174,7 @@ paths:
                             type: string
                           data:
                             type: string
-                            description: Format: "MSIDId,MSID,ConsentFlag,ConsentEffectiveFromDate,FlowDirection"
+                            description: Format:"MSIDId,MSID,ConsentFlag,ConsentEffectiveFromDate,FlowDirection"
       responses:
         '200':
           description: MSIDs updated successfully
