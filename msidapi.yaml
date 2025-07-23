@@ -132,11 +132,15 @@ paths:
                     - row: "1"
                       data: "The MSID Pair Effective From Date must be at least 1 Working Day in the future."
         '400':
-          oneOf:
-          - $ref: '#/components/schemas/InvalidParameters'
-          - $ref: '#/components/schemas/LimitErrorReached'
-          - $ref: '#/components/schemas/PayloadLimit'
-          - $ref: '#/components/schemas/IncorrectParameters'
+          description: Bad Request - Invalid parameters or limits reached
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - $ref: '#/components/schemas/InvalidParameters'
+                  - $ref: '#/components/schemas/LimitErrorReached'
+                  - $ref: '#/components/schemas/PayloadLimit'
+                  - $ref: '#/components/schemas/IncorrectParameters'
         '403':
           $ref: '#/components/responses/AuthorizationError'
 
@@ -211,11 +215,15 @@ paths:
                     - row: "2"
                       data: "MSID Pair must be in Pending Status 'S'"
         '400':
-          oneOf:
-          - $ref: '#/components/schemas/InvalidParameters'
-          - $ref: '#/components/schemas/LimitErrorReached'
-          - $ref: '#/components/schemas/PayloadLimit'
-          - $ref: '#/components/schemas/IncorrectParameters'
+          description: Bad Request - Invalid parameters or limits reached
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - $ref: '#/components/schemas/InvalidParameters'
+                  - $ref: '#/components/schemas/LimitErrorReached'
+                  - $ref: '#/components/schemas/PayloadLimit'
+                  - $ref: '#/components/schemas/IncorrectParameters'
         '403':
           $ref: '#/components/responses/AuthorizationError'
 
