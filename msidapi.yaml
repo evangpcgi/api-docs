@@ -139,8 +139,7 @@ paths:
                 oneOf:
                   - $ref: '#/components/schemas/InvalidParameters'
                   - $ref: '#/components/schemas/LimitErrorReached'
-                  - $ref: '#/components/schemas/PayloadLimit'
-                  - $ref: '#/components/schemas/IncorrectParameters'
+                  - $ref: '#/components/schemas/PayloadLimit'                  
         '403':
           $ref: '#/components/responses/AuthorizationError'
 
@@ -222,8 +221,7 @@ paths:
                 oneOf:
                   - $ref: '#/components/schemas/InvalidParameters'
                   - $ref: '#/components/schemas/LimitErrorReached'
-                  - $ref: '#/components/schemas/PayloadLimit'
-                  - $ref: '#/components/schemas/IncorrectParameters'
+                  - $ref: '#/components/schemas/PayloadLimit'                  
         '403':
           $ref: '#/components/responses/AuthorizationError'
 
@@ -275,13 +273,4 @@ components:
           schema:
             type: object
             example:
-              message: "Payload too large, exceeded maximum number of records allowed in Update API"
-
-    IncorrectParameters:
-      description: Errors in the payload, required parameters are not provided in the payload
-      content:
-        application/json:
-          schema:
-            type: object
-            example:
-              message: "Incorrect number of parameters"
+              message: "Payload too large, exceeded maximum number of records allowed in Update API"   
