@@ -119,18 +119,18 @@ paths:
                 example:
                   status: "Accepted"
                   requestId: "FLEXTRCY_MSID-PAIR-ALLOC-CREATE_20250331151154"
-          '202':
-            description: Partial success with errors during insert operation
-            content:
-              application/json:
-                schema:
-                  type: object
-                  example:
-                    status: "Accepted_with_errors"
-                    requestId: "FLEXTRCY_MSID-PAIR-ALLOC-CREATE_20250331151154"
-                    errors:
-                      - row: "1"
-                        data: "The MSID Pair Effective From Date must be at least 1 Working Day in the future."
+        '202':
+          description: Partial success with errors during insert operation
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  status: "Accepted_with_errors"
+                  MSIDAMSIDRequestId: "FLEXTRCY_MSID-PAIR-ALLOC-CREATE_20250331151154"
+                  errors:
+                    - row: "1"
+                      data: "The MSID Pair Effective From Date must be at least 1 Working Day in the future."
         '400':
           oneOf:
           - $ref: '#/components/schemas/InvalidParameters'
@@ -197,19 +197,19 @@ paths:
                 type: object
                 example:
                   status: "Accepted"
-                  requestId: "FLEXTRCY_MSID-PAIR-ALLOC-UPDATE_20250331151154"
-          '202':
-            description: Partial success with errors during update operation
-            content:
-              application/json:
-                schema:
-                  type: object
-                  example:
-                    status: "Accepted_with_errors"
-                    requestId: "FLEXTRCY_MSID-PAIR-ALLOC-UPDATE_20250331151154"
-                    errors:
-                      - row: "2"
-                        data: "MSID Pair must be in Pending Status 'S'"
+                  MSIDAMSIDRequestId: "FLEXTRCY_MSID-PAIR-ALLOC-UPDATE_20250331151154"
+        '202':
+          description: Partial success with errors during update operation
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  status: "Accepted_with_errors"
+                  MSIDAMSIDRequestId: "FLEXTRCY_MSID-PAIR-ALLOC-UPDATE_20250331151154"
+                  errors:
+                    - row: "2"
+                      data: "MSID Pair must be in Pending Status 'S'"
         '400':
           oneOf:
           - $ref: '#/components/schemas/InvalidParameters'
