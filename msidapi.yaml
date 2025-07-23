@@ -137,9 +137,9 @@ paths:
             application/json:
               schema:
                 oneOf:
-                  - $ref: '#/components/schemas/InvalidParameters'
-                  - $ref: '#/components/schemas/LimitErrorReached'
-                  - $ref: '#/components/schemas/PayloadLimit'                  
+                  - $ref: '#/components/responses/InvalidParameters'
+                  - $ref: '#/components/responses/LimitErrorReached'
+                  - $ref: '#/components/responses/PayloadLimit'                  
         '403':
           $ref: '#/components/responses/AuthorizationError'
 
@@ -219,9 +219,9 @@ paths:
             application/json:
               schema:
                 oneOf:
-                  - $ref: '#/components/schemas/InvalidParameters'
-                  - $ref: '#/components/schemas/LimitErrorReached'
-                  - $ref: '#/components/schemas/PayloadLimit'                  
+                  - $ref: '#/components/responses/InvalidParameters'
+                  - $ref: '#/components/responses/LimitErrorReached'
+                  - $ref: '#/components/responses/PayloadLimit'                  
         '403':
           $ref: '#/components/responses/AuthorizationError'
 
