@@ -203,6 +203,7 @@ paths:
             schema:
               oneOf:
                 - type: object
+                  title: "Case 1: Update EffectiveToSettlementDate field given a list of MSIDS"
                   required: [partyID, username, partyAPIKey, MsidAmsidsToUpdate]
                   properties:
                     partyID:
@@ -222,6 +223,7 @@ paths:
                             type: string
                             description: "MSIDId,EffectiveToSettlementDate"
                 - type: object
+                  title: "Case 1: Update CustomerConsentFlag field given a list of MSIDS and their metering systems"
                   required: [partyID, username, partyAPIKey, ConsentFlagsToUpdate]
                   properties:
                     partyID:
