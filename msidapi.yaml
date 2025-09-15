@@ -24,8 +24,7 @@ paths:
             application/json:
               schema:
                 type: object
-                example:
-                  data:
+                example:                  
                     SVA_BM_Unit: V__PFLEX001
                     Pending_Flag: S
                     MSID_Pair_ID: a0sAe000001xJvhIAE
@@ -234,10 +233,25 @@ components:
           example: "68zUNyKoprbKt7ymLN6E/Q=="
         MsidAmsidRequestID:
           type: string
-          example: "ALEXTRCI_MSID-PAIR-ALLOC-CREATE_20250804155244"
+          example: "ALEXTRCI_MSID-PAIR-ALLOC-CREATE_20250804155244"    
+    
+    ReadCase2:
+      type: object
+      required: [partyID, username, partyAPIKey, MsidAmsidRequestID]
+      properties:
+        partyID:
+          type: string
+          example: "ALEXTRCI"
+        username:
+          type: string
+          example: "email.api@yaml.com"
+        partyAPIKey:
+          type: string
+          example: "68zUNyKoprbKt7ymLN6E/Q=="        
         pendingFlag:
           type: string
           enum: [D, P, PA, S, R]
+          example: "S"
         SVABMUnit:
           type: string
           example: "V__AFLEX002"
@@ -248,13 +262,9 @@ components:
         effectiveToDate:
           type: string
           pattern: '^\d{8}$'
-          example: "30/08/2025"
-        lastModifiedDate:
-          type: string
-          pattern: '^\d{8}$'
-          example: "30/08/2025"
+          example: "30/08/2025"    
 
-    ReadCase2:
+    ReadCase3:
       type: object
       required: [partyID, username, partyAPIKey, SVABMUnit, effectiveFromDate, effectiveToDate]
       properties:
@@ -304,9 +314,11 @@ components:
             properties:
               row:
                 type: string
+                example: "1"
               data:
                 type: string
                 description: "CSV string of MSID data"
+                example: "V__AFLEX002,_A,02/09/2025,20/10/2025,1500032118420,Y,02/09/2025,20/10/2025,,,,"
 
     # ---------- Update Request Schemas ----------
     UpdateCase1:
