@@ -29,6 +29,8 @@ paths:
                       type: string
                     partyAPIKey:
                       type: string
+                    MsidAmsidRequestID:
+                      type: string
                     pendingFlag:
                       type: string
                       enum:
@@ -39,7 +41,7 @@ paths:
                         - R
                     SVABMUnit:
                       type: string
-                      description: BM Unit Id (V__AFLEX003) needs to exist
+                      description: BM Unit Id (e.g V__AFLEX003 needs to exist on the system)
                     effectiveFromDate:
                       type: string
                       pattern: '^\d{8}$'
@@ -48,9 +50,7 @@ paths:
                       pattern: '^\d{8}$'
                     lastModifiedDate:
                       type: string
-                      pattern: '^\d{8}$'
-                    MsidAmsidRequestID:
-                      type: string
+                      pattern: '^\d{8}$'                    
                 - type: object
                   description: >-
                     Case 2: MsidAmsidRequestID is not provided and pendingFlag
@@ -77,10 +77,9 @@ paths:
                         - P
                         - PA
                         - S
-                        - R
                     SVABMUnit:
                       type: string
-                      description: BM Unit Id (V__AFLEX003) needs to exist
+                      description: BM Unit Id (e.g V__AFLEX003 needs to exist on the system)
                     effectiveFromDate:
                       type: string
                       pattern: '^\d{8}$'
@@ -100,10 +99,10 @@ paths:
                 example:
                   data:
                     SVA_BM_Unit: V__PFLEX001
-                    Pending_Flag: R
+                    Pending_Flag: S
                     MSID_Pair_ID: a0sAe000001xJvhIAE
                     Last_Modified_Date: '2025-07-02 14:39:47'
-                    Import_Reject_Reasons: MSID does not exist
+                    Import_Reject_Reasons: ''
                     Import_Metering_System: '4883772918844'
                     GSP_Group: _P
                     Export_Reject_Reasons: ''
