@@ -6,102 +6,114 @@ info:
 
 paths:
   /read:
-  post:
-    summary: /Read Endpoint
-    description: Retrieve existing Msids in the system given the filter criteria
-    requestBody:
-      required: true
-      content:
-        application/json:
-          schema:
-            oneOf:
-              - type: object
-                description: "Case 1: MsidAmsidRequestID is provided"
-                required:
-                  - partyID
-                  - username
-                  - partyAPIKey
-                  - MsidAmsidRequestID
-                properties:
-                  partyID:
-                    type: string
-                  username:
-                    type: string
-                  partyAPIKey:
-                    type: string
-                  pendingFlag:
-                    type: string
-                    enum: [D, P, PA, S, R]
-                  SVABMUnit:
-                    type: string
-                    description: BM Unit Id (V__AFLEX003) needs to exist
-                  effectiveFromDate:
-                    type: string
-                    pattern: '^\d{8}$'
-                  effectiveToDate:
-                    type: string
-                    pattern: '^\d{8}$'
-                  lastModifiedDate:
-                    type: string
-                    pattern: '^\d{8}$'
-                  MsidAmsidRequestID:
-                    type: string
-              - type: object
-                description: "Case 2: MsidAmsidRequestID is not provided and pendingFlag != R"
-                required:
-                  - partyID
-                  - username
-                  - partyAPIKey
-                  - pendingFlag
-                  - SVABMUnit
-                  - effectiveFromDate
-                  - effectiveToDate
-                properties:
-                  partyID:
-                    type: string
-                  username:
-                    type: string
-                  partyAPIKey:
-                    type: string
-                  pendingFlag:
-                    type: string
-                    enum: [D, P, PA, S, R]
-                  SVABMUnit:
-                    type: string
-                    description: BM Unit Id (V__AFLEX003) needs to exist
-                  effectiveFromDate:
-                    type: string
-                    pattern: '^\d{8}$'
-                  effectiveToDate:
-                    type: string
-                    pattern: '^\d{8}$'
-                  lastModifiedDate:
-                    type: string
-                    pattern: '^\d{8}$'
-    responses:
-      '200':
-        description: List of MSIDs matching filters
+    post:
+      summary: /Read Endpoint
+      description: Retrieve existing Msids in the system given the filter criteria
+      requestBody:
+        required: true
         content:
           application/json:
             schema:
-              type: object
-              example:
-                data:
-                  SVA_BM_Unit: "V__PFLEX001"
-                  Pending_Flag: "R"
-                  MSID_Pair_ID: "a0sAe000001xJvhIAE"
-                  Last_Modified_Date: "2025-07-02 14:39:47"
-                  Import_Reject_Reasons: "MSID does not exist"
-                  Import_Metering_System: "4883772918844"
-                  GSP_Group: "_P"
-                  Export_Reject_Reasons: ""
-                  Export_Metering_System: ""
-                  Effective_To_Settlement_Date: "02/07/2025"
-                  Effective_From_Settlement_Date: "29/04/2025"
-      '400':
-        $ref: '#/components/responses/InvalidParameters'
-      '403':
-        $ref: '#/components/responses/AuthorizationError'
+              oneOf:
+                - type: object
+                  description: 'Case 1: MsidAmsidRequestID is provided'
+                  required:
+                    - partyID
+                    - username
+                    - partyAPIKey
+                    - MsidAmsidRequestID
+                  properties:
+                    partyID:
+                      type: string
+                    username:
+                      type: string
+                    partyAPIKey:
+                      type: string
+                    pendingFlag:
+                      type: string
+                      enum:
+                        - D
+                        - P
+                        - PA
+                        - S
+                        - R
+                    SVABMUnit:
+                      type: string
+                      description: BM Unit Id (V__AFLEX003) needs to exist
+                    effectiveFromDate:
+                      type: string
+                      pattern: '^\d{8}$'
+                    effectiveToDate:
+                      type: string
+                      pattern: '^\d{8}$'
+                    lastModifiedDate:
+                      type: string
+                      pattern: '^\d{8}$'
+                    MsidAmsidRequestID:
+                      type: string
+                - type: object
+                  description: >-
+                    Case 2: MsidAmsidRequestID is not provided and pendingFlag
+                    != R
+                  required:
+                    - partyID
+                    - username
+                    - partyAPIKey
+                    - pendingFlag
+                    - SVABMUnit
+                    - effectiveFromDate
+                    - effectiveToDate
+                  properties:
+                    partyID:
+                      type: string
+                    username:
+                      type: string
+                    partyAPIKey:
+                      type: string
+                    pendingFlag:
+                      type: string
+                      enum:
+                        - D
+                        - P
+                        - PA
+                        - S
+                        - R
+                    SVABMUnit:
+                      type: string
+                      description: BM Unit Id (V__AFLEX003) needs to exist
+                    effectiveFromDate:
+                      type: string
+                      pattern: '^\d{8}$'
+                    effectiveToDate:
+                      type: string
+                      pattern: '^\d{8}$'
+                    lastModifiedDate:
+                      type: string
+                      pattern: '^\d{8}$'
+      responses:
+        '200':
+          description: List of MSIDs matching filters
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  data:
+                    SVA_BM_Unit: V__PFLEX001
+                    Pending_Flag: R
+                    MSID_Pair_ID: a0sAe000001xJvhIAE
+                    Last_Modified_Date: '2025-07-02 14:39:47'
+                    Import_Reject_Reasons: MSID does not exist
+                    Import_Metering_System: '4883772918844'
+                    GSP_Group: _P
+                    Export_Reject_Reasons: ''
+                    Export_Metering_System: ''
+                    Effective_To_Settlement_Date: 02/07/2025
+                    Effective_From_Settlement_Date: 29/04/2025
+        '400':
+          $ref: '#/components/responses/InvalidParameters'
+        '403':
+          $ref: '#/components/responses/AuthorizationError'
 
   /insert:
     post:
