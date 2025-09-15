@@ -313,8 +313,8 @@ components:
                   11. Effective From Settlement Date {ECCF} (DD/MM/YYYY)
                   12. Effective To Settlement Date {ECCF} (DD/MM/YYYY)
                 example: |
-                 "V__AFLEX002,_A,02/09/2025,20/10/2025,1800061146877,Y,02/09/2025,20/10/2025,1800061146886,Y,02/09/2025,20/10/2025"
-                 "V__AFLEX002,_A,02/09/2025,20/10/2025,1800061146877,Y,02/09/2025,20/10/2025,,,,"
+                  V__AFLEX002,_A,02/09/2025,20/10/2025,1800061146877,Y,02/09/2025,20/10/2025,1800061146886,Y,02/09/2025,20/10/2025
+                  V__AFLEX002,_A,02/09/2025,20/10/2025,1800061146877,Y,02/09/2025,20/10/2025,,,,
 
     # ---------- Update Request Schemas ----------
     UpdateCase1:
@@ -367,10 +367,10 @@ components:
                 example: "1"
               data:
                 type: string
-                description: "MSIDId,MPAN,ConsentFlag,ConsentEffectiveFromDate,FlowDirection"
+                description: "MSIDId,MPAN,ConsentFlag,ConsentEffectiveFromDate,FlowDirection (Import/Export)"
                 example: |
-                 "a0sAe000001CeyCIAS,2100041495940,Y,25/08/2025,Import"
-                 "a0sAe000001CeyCIAS,2100041495940,Y,25/08/2025,Export"                
+                  a0sAe000001CeyCIAS,2100041495940,Y,25/08/2025,Import"
+                  a0sAe000001CeyCIAS,2100041495940,Y,25/08/2025,Export"                
 
   responses:
     AuthorizationError:
