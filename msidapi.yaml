@@ -87,8 +87,8 @@ paths:
             application/json:
               schema:
                 oneOf:
-                  - $ref: '#/components/schemas/PayloadSchemaValidation'
-                  - $ref: '#/components/schemas/PayloadBusinessValidation'
+                  - $ref: '#/components/schemas/InsertSchemaValidation'
+                  - $ref: '#/components/schemas/InsertdBusinessValidation'
                   - $ref: '#/components/schemas/InvalidParameters'
                   - $ref: '#/components/schemas/LimitErrorReached'
                   - $ref: '#/components/schemas/PayloadLimit'
@@ -135,6 +135,8 @@ paths:
             application/json:
               schema:
                 oneOf:
+                  - $ref: '#/components/schemas/UpdateSchemaValidation'
+                  - $ref: '#/components/schemas/UpdateBusinessValidation'
                   - $ref: '#/components/schemas/InvalidParameters'
                   - $ref: '#/components/schemas/LimitErrorReached'
                   - $ref: '#/components/schemas/PayloadLimit'
@@ -168,7 +170,7 @@ components:
       example:
         message: "Payload too large, exceeded maximum number of records allowed in Update API"
      
-    PayloadSchemaValidation:
+    InsertSchemaValidation:
       type: object
       properties:
         message:
@@ -176,7 +178,7 @@ components:
       example:
         message: "Incorrect field length: BM Unit ID."
         
-    PayloadBusinessValidation:
+    InsertBusinessValidation:
       type: object
       properties:
         message:
@@ -184,6 +186,22 @@ components:
       example:
         message: "The MSID Pair GSP Group must be in the same GSP Group of the associated BM Unit."
 
+    UpdateSchemaValidation:
+      type: object
+      properties:
+        message:
+          type: string
+      example:
+        message: "Incorrect field length: MSID Pair ID."
+        
+    UpdateETDBusinessValidation:
+      type: object
+      properties:
+        message:
+          type: string
+      example:
+        message: "MSID Pair records cannot be changed to a later Effective To Date."
+    
     AuthorizationError:
       type: object
       properties:
@@ -207,26 +225,34 @@ components:
       properties:
         partyID:
           type: string
+          example: "ALEXTRCI"
         username:
           type: string
+          example: "email.api@yaml.com"
         partyAPIKey:
           type: string
+          example: "68zUNyKoprbKt7ymLN6E/Q=="
         MsidAmsidRequestID:
           type: string
+          example: "ALEXTRCI_MSID-PAIR-ALLOC-CREATE_20250804155244"
         pendingFlag:
           type: string
           enum: [D, P, PA, S, R]
         SVABMUnit:
           type: string
+          example: "V__AFLEX002"
         effectiveFromDate:
           type: string
           pattern: '^\d{8}$'
+          example: "01/08/2025"
         effectiveToDate:
           type: string
           pattern: '^\d{8}$'
+          example: "30/08/2025"
         lastModifiedDate:
           type: string
           pattern: '^\d{8}$'
+          example: "30/08/2025"
 
     ReadCase2:
       type: object
@@ -234,24 +260,32 @@ components:
       properties:
         partyID:
           type: string
+          example: "ALEXTRCI"
         username:
           type: string
+          example: "email.api@yaml.com"
         partyAPIKey:
           type: string
+          example: "68zUNyKoprbKt7ymLN6E/Q=="
         pendingFlag:
           type: string
           enum: [D, P, PA, R, S]
         SVABMUnit:
           type: string
+          example: "V__AFLEX002"
         effectiveFromDate:
           type: string
           pattern: '^\d{8}$'
+          example: "01/08/2025"
         effectiveToDate:
           type: string
           pattern: '^\d{8}$'
+          example: "30/08/2025"
         lastModifiedDate:
           type: string
           pattern: '^\d{8}$'
+          example: "30/08/2025"
+          
 
     # ---------- Insert Request Schema ----------
     InsertRequest:
@@ -293,9 +327,11 @@ components:
             properties:
               row:
                 type: string
+                example: "1"
               data:
                 type: string
                 description: "MSIDId,EffectiveToSettlementDate"
+                example: "a0sAe000002Ll66IAC,20/08/2025"
 
     UpdateCase2:
       type: object
@@ -314,9 +350,11 @@ components:
             properties:
               row:
                 type: string
+                example: "1"
               data:
                 type: string
                 description: "MSIDId,MPAN,ConsentFlag,ConsentEffectiveFromDate,FlowDirection"
+                example: "a0sAe000001CeyCIAS,2100041495940,Y,25/08/2025,Import"
 
   responses:
     AuthorizationError:
