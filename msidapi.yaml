@@ -312,7 +312,11 @@ components:
                   10. Export MSID Customer Consent Flag (Y/N)
                   11. Effective From Settlement Date {ECCF} (DD/MM/YYYY)
                   12. Effective To Settlement Date {ECCF} (DD/MM/YYYY)
-                example: "V__AFLEX002,_A,02/09/2025,20/10/2025,1800061146877,Y,02/09/2025,20/10/2025,1800061146886,Y,02/09/2025,20/10/2025"
+                example: 
+            example: [
+              {"row": "1", "data": "V__AFLEX002,_A,02/09/2025,20/10/2025,1800061146877,Y,02/09/2025,20/10/2025,1800061146886,Y,02/09/2025,20/10/2025"},
+              {"row": "2", "data": "V__AFLEX002,_A,02/09/2025,20/10/2025,1800061146877,Y,02/09/2025,20/10/2025,,,,"}
+            ]     
 
     # ---------- Update Request Schemas ----------
     UpdateCase1:
@@ -335,12 +339,14 @@ components:
             type: object
             properties:
               row:
-                type: string
-                example: "1"
+                type: string                
               data:
                 type: string
                 description: "MSIDId,EffectiveToSettlementDate"
-                example: "a0sAe000002Ll66IAC,20/08/2025"
+            example: [
+              {"row": "1", "data": "a0sAe000002GIr3HAG,10/10/2025"},
+              {"row": "2", "data": "a0sAe000002GIr3IAG,11/10/2025"}
+            ]
 
     UpdateCase2:
       title: "Update MSID Consent Flag"
@@ -365,11 +371,10 @@ components:
               data:
                 type: string
                 description: "MSIDId,MPAN,ConsentFlag,ConsentEffectiveFromDate,FlowDirection (Import/Export)"                
-            example:
-              - row: "1"
-                data: "a0sAe000001CeyCIAS,2100041495940,Y,25/08/2025,Import"
-              - row: "2"
-                data: "a0sAe000001CeyCIAS,2100041495940,Y,25/08/2025,Export"
+            example: [
+              {"row": "1", "data": "a0sAe000002GIr3HAG,1900071112273,N,10/10/2025,Import"},
+              {"row": "2", "data": "a0sAe000002GIr3HAG,1900071112273,N,10/10/2025,Export"}
+            ]
 
   responses:
     AuthorizationError:
