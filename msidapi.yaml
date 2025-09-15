@@ -40,6 +40,13 @@ paths:
                   pattern: '^\d{8}$'
                 MsidAmsidRequestID:
                   type: string
+              oneOf:
+                - type: object
+                description: Case 1: MsidAmsidRequestID is provided
+                required: [MsidAmsidRequestID]
+                - type: object
+                description: Case 2: MsidAmsidRequestID is not provided and pendingFlag != R
+                required: [pendingFlag, SVABMUnit, effectiveFromDate, effectiveToDate]                
       responses:
         '200':
           description: List of MSIDs matching filters
