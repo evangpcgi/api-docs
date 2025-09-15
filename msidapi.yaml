@@ -296,8 +296,11 @@ components:
           schema:
             type: object
             title: "Invalid parameters"
-            example:
-              message: "Invalid parameters, please check the API documentation"
+            properties:
+              message:
+                type: string
+          example:   
+            message: "Invalid parameters, please check the API documentation"
 
     AuthorizationError:
       title: Authorization parameters
