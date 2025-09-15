@@ -1,0 +1,309 @@
+openapi: 3.0.3
+info:
+  title: MSID Management API 2
+  description: API for reading, inserting, and updating MSID records. All endpoints require authorization parameters in the request body.
+  version: 1.0.0
+
+paths:
+  /read:
+    post:
+      summary: /Read Endpoint
+      description: Retrieve existing Msids in the system given the filter criteria
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              oneOf:
+                - $ref: '#/components/schemas/ReadCase1'
+                - $ref: '#/components/schemas/ReadCase2'
+      responses:
+        '200':
+          description: List of MSIDs matching filters
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  data:
+                    SVA_BM_Unit: V__PFLEX001
+                    Pending_Flag: S
+                    MSID_Pair_ID: a0sAe000001xJvhIAE
+                    Last_Modified_Date: '2025-07-02 14:39:47'
+                    Import_Reject_Reasons: ''
+                    Import_Metering_System: '4883772918844'
+                    GSP_Group: _P
+                    Export_Reject_Reasons: ''
+                    Export_Metering_System: ''
+                    Effective_To_Settlement_Date: 02/07/2025
+                    Effective_From_Settlement_Date: 29/04/2025
+        '400':
+          description: Bad Request - Invalid parameters or limits reached
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - $ref: '#/components/schemas/InvalidParameters'
+                  - $ref: '#/components/schemas/LimitErrorReached'
+                  - $ref: '#/components/schemas/PayloadLimit'
+        '403':
+          $ref: '#/components/responses/AuthorizationError'
+
+  /insert:
+    post:
+      summary: /Insert Endpoint
+      description: Submit Msid for business validations and insertion on the system
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/InsertRequest'
+      responses:
+        '200':
+          description: MSIDs processed successfully and accepted
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  status: "Accepted"
+                  requestId: "FLEXTRCY_MSID-PAIR-ALLOC-CREATE_20250331151154"
+        '202':
+          description: Partial success with errors
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  status: "Accepted_with_errors"
+                  MSIDAMSIDRequestId: "FLEXTRCY_MSID-PAIR-ALLOC-CREATE_20250331151154"
+                  errors:
+                    - row: "1"
+                      data: "The MSID Pair Effective From Date must be at least 1 Working Day in the future."
+        '400':
+          description: Bad Request - Invalid parameters or limits reached
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - $ref: '#/components/schemas/InvalidParameters'
+                  - $ref: '#/components/schemas/LimitErrorReached'
+                  - $ref: '#/components/schemas/PayloadLimit'
+        '403':
+          $ref: '#/components/responses/AuthorizationError'
+
+  /update:
+    post:
+      summary: /Update Endpoint 
+      description: Update Effective From Date or Customer Consent Flag
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              oneOf:
+                - $ref: '#/components/schemas/UpdateCase1'
+                - $ref: '#/components/schemas/UpdateCase2'
+      responses:
+        '200':
+          description: MSIDs updated successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  status: "Accepted"
+                  MSIDAMSIDRequestId: "FLEXTRCY_MSID-PAIR-ALLOC-UPDATE_20250331151154"
+        '202':
+          description: Partial success with errors
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  status: "Accepted_with_errors"
+                  MSIDAMSIDRequestId: "FLEXTRCY_MSID-PAIR-ALLOC-UPDATE_20250331151154"
+                  errors:
+                    - row: "2"
+                      data: "MSID Pair must be in Pending Status 'S'"
+        '400':
+          description: Bad Request - Invalid parameters or limits reached
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - $ref: '#/components/schemas/InvalidParameters'
+                  - $ref: '#/components/schemas/LimitErrorReached'
+                  - $ref: '#/components/schemas/PayloadLimit'
+        '403':
+          $ref: '#/components/responses/AuthorizationError'
+
+components:
+  schemas:
+    # ---------- Error Schemas ----------
+    InvalidParameters:
+      type: object
+      properties:
+        message:
+          type: string
+      example:
+        message: "Invalid parameters, please check the API documentation"
+
+    LimitErrorReached:
+      type: object
+      properties:
+        message:
+          type: string
+      example:
+        message: "Wrong Payload: Maximum number of row errors reached (stored_parameter_number 500)"
+
+    PayloadLimit:
+      type: object
+      properties:
+        message:
+          type: string
+      example:
+        message: "Payload too large, exceeded maximum number of records allowed in Update API"
+
+    AuthorizationError:
+      type: object
+      properties:
+        message:
+          type: string
+      example:
+        message: "The provided username and partyID combination is not authorized."
+
+    InvalidEndpoint:
+      type: object
+      properties:
+        message:
+          type: string
+      example:
+        message: "Invalid endpoint. Accepted endpoints are: Read, Insert, Update"
+
+    # ---------- Read Request Schemas ----------
+    ReadCase1:
+      type: object
+      required: [partyID, username, partyAPIKey, MsidAmsidRequestID]
+      properties:
+        partyID:
+          type: string
+        username:
+          type: string
+        partyAPIKey:
+          type: string
+        MsidAmsidRequestID:
+          type: string
+        pendingFlag:
+          type: string
+          enum: [D, P, PA, S, R]
+        SVABMUnit:
+          type: string
+        effectiveFromDate:
+          type: string
+          pattern: '^\d{8}$'
+        effectiveToDate:
+          type: string
+          pattern: '^\d{8}$'
+        lastModifiedDate:
+          type: string
+          pattern: '^\d{8}$'
+
+    ReadCase2:
+      type: object
+      required: [partyID, username, partyAPIKey, SVABMUnit, effectiveFromDate, effectiveToDate]
+      properties:
+        partyID:
+          type: string
+        username:
+          type: string
+        partyAPIKey:
+          type: string
+        pendingFlag:
+          type: string
+          enum: [D, P, PA, R, S]
+        SVABMUnit:
+          type: string
+        effectiveFromDate:
+          type: string
+          pattern: '^\d{8}$'
+        effectiveToDate:
+          type: string
+          pattern: '^\d{8}$'
+        lastModifiedDate:
+          type: string
+          pattern: '^\d{8}$'
+
+    # ---------- Insert Request Schema ----------
+    InsertRequest:
+      type: object
+      required: [partyID, username, partyAPIKey]
+      properties:
+        partyID:
+          type: string
+        username:
+          type: string
+        partyAPIKey:
+          type: string
+        MsidAmsidsToInsert:
+          type: array
+          items:
+            type: object
+            properties:
+              row:
+                type: string
+              data:
+                type: string
+                description: "CSV string of MSID data"
+
+    # ---------- Update Request Schemas ----------
+    UpdateCase1:
+      type: object
+      required: [partyID, username, partyAPIKey, MsidAmsidsToUpdate]
+      properties:
+        partyID:
+          type: string
+        username:
+          type: string
+        partyAPIKey:
+          type: string
+        MsidAmsidsToUpdate:
+          type: array
+          items:
+            type: object
+            properties:
+              row:
+                type: string
+              data:
+                type: string
+                description: "MSIDId,EffectiveToSettlementDate"
+
+    UpdateCase2:
+      type: object
+      required: [partyID, username, partyAPIKey, ConsentFlagsToUpdate]
+      properties:
+        partyID:
+          type: string
+        username:
+          type: string
+        partyAPIKey:
+          type: string
+        ConsentFlagsToUpdate:
+          type: array
+          items:
+            type: object
+            properties:
+              row:
+                type: string
+              data:
+                type: string
+                description: "MSIDId,MPAN,ConsentFlag,ConsentEffectiveFromDate,FlowDirection"
+
+  responses:
+    AuthorizationError:
+      description: Authorization failure (invalid API key or unauthorized username)
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/AuthorizationError'
