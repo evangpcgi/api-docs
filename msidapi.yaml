@@ -135,7 +135,8 @@ paths:
               schema:
                 oneOf:
                   - $ref: '#/components/schemas/UpdateSchemaValidation'
-                  - $ref: '#/components/schemas/UpdateBusinessValidation'
+                  - $ref: '#/components/schemas/UpdateETDBusinessValidation'
+                  - $ref: '#/components/schemas/UpdateConsentFlagBusinessValidation'
                   - $ref: '#/components/schemas/InvalidParameters'
                   - $ref: '#/components/schemas/LimitErrorReached'
                   - $ref: '#/components/schemas/PayloadLimit'
@@ -200,6 +201,14 @@ components:
           type: string
       example:
         message: "MSID Pair records cannot be changed to a later Effective To Date."
+
+    UpdateConsentFlagBusinessValidation:
+      type: object
+      properties:
+        message:
+          type: string
+      example:
+        message: "MSID Pair must be in Pending Status 'S'."
     
     AuthorizationError:
       type: object
