@@ -8,7 +8,18 @@ paths:
   /read:
     post:
       summary: /Read Endpoint
-      description: Retrieve existing Msids in the system given the filter criteria
+      description: |
+        Retrieve existing Msids in the system given the filter criteria (*mandatory **conditional):
+        1. partyID * (Party ID as shown in Account Info)
+        2. username * (Email of authorized signatory/contact)
+        3. partyAPIKey * (Key as received in email after requesting party key)
+        4. MsidAmsidRequestID (Batch request ID from a previous Insert or Update operation)
+        5. pendingFlag (Filter by status code D, P, PA, S, R)
+        6. SVABMUnit ** (Must be an existing SVA BM unit. Required when pendingFlag ≠ R without a MsidAmsidRequestID)
+        7. effectiveFromDate ** (required when SVABMUnit populated) 
+        8. effectiveToDate ** (required when SVABMUnit populated) 
+        9. lastModifiedDate (Can be used with any pendingFlag. Helps refine large result sets near the 5,000-record limit)
+                  
       requestBody:
         required: true
         content:
