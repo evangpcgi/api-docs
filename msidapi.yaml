@@ -16,8 +16,8 @@ paths:
             schema:
               oneOf:
                 - type: object
-                  title: Case 1: Filter by MsidAmsidRequestID (e.g after insert call)
-                  description: MSIDs by MsidAmsidRequestID search 
+                  title: "Case 1: Filter by MsidAmsidRequestID (e.g after insert call)"
+                  description: "MSIDs by MsidAmsidRequestID search" 
                   required:
                     - partyID
                     - username
@@ -53,7 +53,7 @@ paths:
                       type: string
                       pattern: '^\d{8}$'                    
                 - type: object
-                  title: Case 2: MsidAmsidRequestID not provided and Pending flag <> R
+                  title: "Case 2: MsidAmsidRequestID not provided and Pending flag <> R"
                   description: pendingFlag <> R, more filters needed
                   required:
                     - partyID
