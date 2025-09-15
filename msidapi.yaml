@@ -45,7 +45,7 @@ paths:
                 oneOf:
                   - $ref: '#/components/schemas/InvalidParameters'
                   - $ref: '#/components/schemas/LimitErrorReached'
-                  - $ref: '#/components/schemas/PayloadLimit'
+                  - $ref: '#/components/schemas/PayloadLimit'                  
         '403':
           $ref: '#/components/responses/AuthorizationError'
 
@@ -87,6 +87,8 @@ paths:
             application/json:
               schema:
                 oneOf:
+                  - $ref: '#/components/schemas/PayloadSchemaValidation'
+                  - $ref: '#/components/schemas/PayloadBusinessValidation'
                   - $ref: '#/components/schemas/InvalidParameters'
                   - $ref: '#/components/schemas/LimitErrorReached'
                   - $ref: '#/components/schemas/PayloadLimit'
@@ -165,6 +167,22 @@ components:
           type: string
       example:
         message: "Payload too large, exceeded maximum number of records allowed in Update API"
+     
+    PayloadSchemaValidation:
+      type: object
+      properties:
+        message:
+          type: string
+      example:
+        message: "Incorrect field length: BM Unit ID."
+        
+    PayloadBusinessValidation:
+      type: object
+      properties:
+        message:
+          type: string
+      example:
+        message: "The MSID Pair GSP Group must be in the same GSP Group of the associated BM Unit."
 
     AuthorizationError:
       type: object
