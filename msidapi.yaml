@@ -265,7 +265,7 @@ components:
           example: "30/08/2025"           
     
     # ---------- Insert Request Schema ----------
-    InsertRequest1:
+    InsertRequest:
       type: object
       required: [partyID, username, partyAPIKey, MsidAmsidsToInsert]
       properties:
