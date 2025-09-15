@@ -125,6 +125,7 @@ paths:
       summary: /Update Endpoint 
       description: |
         Comma Separated Values string with MSID data fields in order (*)mandatory:
+        
         Effective to Settlement Date
         1. MSIDPairID (Unique Kinnect Customer Solutions portal ID for the MSID Pair) *        
         2. Effective To Settlement Date {MSIDP} (DD/MM/YYYY) *
@@ -438,7 +439,7 @@ components:
                 description: "Row index"
               data:
                 type: string
-                description: "MSIDId,MPAN,ConsentFlag,ConsentEffectiveFromDate,FlowDirection (Import/Export)"                
+                description: "MSIDId,MPAN,ConsentFlag,ConsentEffectiveFromDate,FlowDirection"                
             example: [
               {"row": "1", "data": "a0sAe000002GIr3HAG,1900071112273,N,10/10/2025,Import"},
               {"row": "2", "data": "a0sAe000002GIr3HAG,1900071112273,N,10/10/2025,Export"}
