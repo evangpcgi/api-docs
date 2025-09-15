@@ -53,13 +53,12 @@ paths:
                       type: string
                       pattern: '^\d{8}$'                    
                 - type: object
-                  title: "Case 2: MsidAmsidRequestID not provided and Pending flag <> R"
+                  title: "Case 2: MsidAmsidRequestID not provided"
                   description: pendingFlag <> R, more filters needed
                   required:
                     - partyID
                     - username
-                    - partyAPIKey
-                    - pendingFlag
+                    - partyAPIKey                    
                     - SVABMUnit
                     - effectiveFromDate
                     - effectiveToDate
@@ -76,6 +75,7 @@ paths:
                         - D
                         - P
                         - PA
+                        - R
                         - S
                     SVABMUnit:
                       type: string
@@ -141,6 +141,7 @@ paths:
                     properties:
                       row:
                         type: string
+                        example: "1"
                         description: "Row index"
                       data:
                         type: string
@@ -222,9 +223,11 @@ paths:
                         properties:
                           row:
                             type: string
+                            example: "1"
                           data:
                             type: string
                             description: "MSIDId,EffectiveToSettlementDate"
+                            example: "a0sAe000001xJvhIAE,10/06/2025"
                 - type: object
                   title: "Case 1: Update CustomerConsentFlag field given a list of MSIDS and their metering systems"
                   required: [partyID, username, partyAPIKey, ConsentFlagsToUpdate]
