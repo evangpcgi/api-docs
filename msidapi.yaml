@@ -27,7 +27,7 @@ paths:
               schema:
                 type: object
                 example:                  
-                    SVA_BM_Unit: V__PFLEX001
+                    SVA_BM_Unit: V__AFLEX001
                     Pending_Flag: S
                     MSID_Pair_ID: a0sAe000001xJvhIAE
                     Last_Modified_Date: '2025-07-02 14:39:47'
@@ -231,7 +231,7 @@ components:
     # ---------- Read Request Schemas ----------
     ReadCase1:
       type: object
-      required: [partyID, username, partyAPIKey, MsidAmsidRequestID]
+      required: [partyID, username, partyAPIKey]
       properties:
         partyID:
           type: string
@@ -248,7 +248,7 @@ components:
     
     ReadCase2:
       type: object
-      required: [partyID, username, partyAPIKey, pendingflag]
+      required: [partyID, username, partyAPIKey]
       properties:
         partyID:
           type: string
