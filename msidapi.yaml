@@ -128,6 +128,7 @@ paths:
         - Effective to Settlement Date
         1. MSIDPairID (Unique Kinnect Customer Solutions portal ID for the MSID Pair) *        
         2. Effective To Settlement Date {MSIDP} (DD/MM/YYYY) *
+        
         – Consent Information
         1. MSIDPairID (Unique Kinnect Customer Solutions portal ID for the MSID Pair) *
         2. MSID (Import or Export MSID associated with the MSID Pair) *
