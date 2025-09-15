@@ -17,6 +17,8 @@ paths:
               oneOf:
                 - $ref: '#/components/schemas/ReadCase1'
                 - $ref: '#/components/schemas/ReadCase2'
+                - $ref: '#/components/schemas/ReadCase3'
+                - $ref: '#/components/schemas/ReadCase4'
       responses:
         '200':
           description: List of MSIDs matching filters
@@ -104,8 +106,8 @@ paths:
           application/json:
             schema:
               oneOf:
-                - $ref: '#/components/schemas/UpdateCase1'
-                - $ref: '#/components/schemas/UpdateCase2'
+                - $ref: '#/components/schemas/UpdateMSIDETD'
+                - $ref: '#/components/schemas/UpdateConsentFlag'
       responses:
         '200':
           description: MSIDs updated successfully
@@ -126,7 +128,7 @@ paths:
                   status: "Accepted_with_errors"
                   MSIDAMSIDRequestId: "FLEXTRCY_MSID-PAIR-ALLOC-UPDATE_20250331151154"
                   errors:
-                    - row: "2"
+                    - row: "1"
                       data: "MSID Pair must be in Pending Status 'S'"
         '400':
           description: Bad Request - Invalid parameters or limits reached
@@ -176,7 +178,7 @@ components:
         message:
           type: string
       example:
-        message: "Incorrect field length: BM Unit ID."
+        message: "Incorrect field length: GSP Group."
         
     InsertBusinessValidation:
       type: object
@@ -246,7 +248,7 @@ components:
     
     ReadCase2:
       type: object
-      required: [partyID, username, partyAPIKey, SVABMUnit, effectiveFromDate, effectiveToDate]
+      required: [partyID, username, partyAPIKey, pendingflag]
       properties:
         partyID:
           type: string
@@ -259,7 +261,50 @@ components:
           example: "68zUNyKoprbKt7ymLN6E/Q=="        
         pendingFlag:
           type: string
-          enum: [D, P, PA, S, R]
+          enum: [R]
+          example: "R"
+     
+    ReadCase3:
+      type: object
+      required: [partyID, username, partyAPIKey, SVABMUnit, effectiveFromDate, effectiveToDate]
+      properties:
+        partyID:
+          type: string
+          example: "ALEXTRCI"
+        username:
+          type: string
+          example: "email.api@yaml.com"
+        partyAPIKey:
+          type: string
+          example: "68zUNyKoprbKt7ymLN6E/Q=="                
+        SVABMUnit:
+          type: string
+          example: "V__AFLEX002"
+        effectiveFromDate:
+          type: string
+          pattern: '^\d{8}$'
+          example: "01/08/2025"
+        effectiveToDate:
+          type: string
+          pattern: '^\d{8}$'
+          example: "30/08/2025"
+    
+    ReadCase4:
+      type: object
+      required: [partyID, username, partyAPIKey, SVABMUnit, effectiveFromDate, effectiveToDate]
+      properties:
+        partyID:
+          type: string
+          example: "ALEXTRCI"
+        username:
+          type: string
+          example: "email.api@yaml.com"
+        partyAPIKey:
+          type: string
+          example: "68zUNyKoprbKt7ymLN6E/Q=="                
+        pendingFlag:
+          type: string
+          enum: [D,P,PA,S]
           example: "S"
         SVABMUnit:
           type: string
@@ -271,8 +316,8 @@ components:
         effectiveToDate:
           type: string
           pattern: '^\d{8}$'
-          example: "30/08/2025"           
-    
+          example: "30/08/2025"
+          
     # ---------- Insert Request Schema ----------
     InsertRequest:
       type: object
@@ -294,8 +339,7 @@ components:
             properties:
               row:
                 type: string
-                description: "Row index"
-                example: "1"
+                description: "Row index"                
               data:
                 type: string
                 description: |
@@ -311,15 +355,14 @@ components:
                   9. Export MSID (13 chars)
                   10. Export MSID Customer Consent Flag (Y/N)
                   11. Effective From Settlement Date {ECCF} (DD/MM/YYYY)
-                  12. Effective To Settlement Date {ECCF} (DD/MM/YYYY)
-                example: 
+                  12. Effective To Settlement Date {ECCF} (DD/MM/YYYY)                
             example: [
               {"row": "1", "data": "V__AFLEX002,_A,02/09/2025,20/10/2025,1800061146877,Y,02/09/2025,20/10/2025,1800061146886,Y,02/09/2025,20/10/2025"},
               {"row": "2", "data": "V__AFLEX002,_A,02/09/2025,20/10/2025,1800061146877,Y,02/09/2025,20/10/2025,,,,"}
             ]     
 
     # ---------- Update Request Schemas ----------
-    UpdateCase1:
+    UpdateMSIDETD:
       title: "Update MSID ETD"
       type: object
       required: [partyID, username, partyAPIKey, MsidAmsidsToUpdate]
@@ -339,7 +382,8 @@ components:
             type: object
             properties:
               row:
-                type: string                
+                type: string
+                description: "Row index"
               data:
                 type: string
                 description: "MSIDId,EffectiveToSettlementDate"
@@ -348,7 +392,7 @@ components:
               {"row": "2", "data": "a0sAe000002GIr3IAG,11/10/2025"}
             ]
 
-    UpdateCase2:
+    UpdateConsentFlag:
       title: "Update MSID Consent Flag"
       type: object
       required: [partyID, username, partyAPIKey, ConsentFlagsToUpdate]
@@ -361,13 +405,15 @@ components:
           example: "email.api@yaml.com"
         partyAPIKey:
           type: string
+          example: "68zUNyKoprbKt7ymLN6E/Q=="
         ConsentFlagsToUpdate:
           type: array
           items:
             type: object
             properties:
               row:
-                type: string                
+                type: string
+                description: "Row index"
               data:
                 type: string
                 description: "MSIDId,MPAN,ConsentFlag,ConsentEffectiveFromDate,FlowDirection (Import/Export)"                
