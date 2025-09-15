@@ -294,11 +294,27 @@ components:
             properties:
               row:
                 type: string
+                description: "Row index"
                 example: "1"
               data:
                 type: string
-                description: "CSV string of MSID data"
-                example: "V__AFLEX002,_A,02/09/2025,20/10/2025,1500032118420,Y,02/09/2025,20/10/2025,,,,"
+                description: |
+                  Comma Separated Values string with MSID data fields in order (*)mandatory:
+                  1. BMUnitID (max 11 chars) *
+                  2. GSPGroup (2 chars) *
+                  3. Effective From Settlement Date {MSIDP} (DD/MM/YYYY) *
+                  4. Effective To Settlement Date {MSIDP} (DD/MM/YYYY) *
+                  5. Import MSID (13 chars) *
+                  6. Import MSID Customer Consent Flag (Y/N) *
+                  7. Effective From Settlement Date {ICCF} (DD/MM/YYYY) *
+                  8. Effective To Settlement Date {ICCF} (DD/MM/YYYY) *
+                  9. Export MSID (13 chars)
+                  10. Export MSID Customer Consent Flag (Y/N)
+                  11. Effective From Settlement Date {ECCF} (DD/MM/YYYY)
+                  12. Effective To Settlement Date {ECCF} (DD/MM/YYYY)
+                example: |
+                 "V__AFLEX002,_A,02/09/2025,20/10/2025,1800061146877,Y,02/09/2025,20/10/2025,1800061146886,Y,02/09/2025,20/10/2025"
+                 "V__AFLEX002,_A,02/09/2025,20/10/2025,1800061146877,Y,02/09/2025,20/10/2025,,,,"
 
     # ---------- Update Request Schemas ----------
     UpdateCase1:
@@ -352,7 +368,9 @@ components:
               data:
                 type: string
                 description: "MSIDId,MPAN,ConsentFlag,ConsentEffectiveFromDate,FlowDirection"
-                example: "a0sAe000001CeyCIAS,2100041495940,Y,25/08/2025,Import"
+                example: |
+                 "a0sAe000001CeyCIAS,2100041495940,Y,25/08/2025,Import"
+                 "a0sAe000001CeyCIAS,2100041495940,Y,25/08/2025,Export"                
 
   responses:
     AuthorizationError:
