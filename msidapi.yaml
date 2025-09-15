@@ -177,7 +177,7 @@ paths:
             application/json:
               schema:
                 type: object
-                title: "MSIDS Inserted (not all payload) - Batch Identifier for Read calls"
+                title: "MSIDS Inserted (partial within the payload) - Batch Identifier for Read calls"
                 example:
                   status: "Accepted_with_errors"
                   MSIDAMSIDRequestId: "FLEXTRCY_MSID-PAIR-ALLOC-CREATE_20250331151154"
@@ -229,7 +229,7 @@ paths:
                             description: "MSIDId,EffectiveToSettlementDate"
                             example: "a0sAe000001xJvhIAE,10/06/2025"
                 - type: object
-                  title: "Case 1: Update CustomerConsentFlag field given a list of MSIDS and their metering systems"
+                  title: "Case 2: Update CustomerConsentFlag field given a list of MSIDS and their metering systems"
                   required: [partyID, username, partyAPIKey, ConsentFlagsToUpdate]
                   properties:
                     partyID:
@@ -245,9 +245,11 @@ paths:
                         properties:
                           row:
                             type: string
+                            example: "1"
                           data:
                             type: string
                             description: "MSIDId,MPAN,ConsentFlag,ConsentEffectiveFromDate,FlowDirection"
+                            example: "a0sPv000003CmFFIA0,1600033851385,N,20/08/2025,Import"
       responses:
         '200':
           description: MSIDs processed successfully and accepted for insertion on the system
@@ -265,6 +267,7 @@ paths:
             application/json:
               schema:
                 type: object
+                title: "MSIDS Updated (partial within the payload) - Batch Identifier for Read calls"
                 example:
                   status: "Accepted_with_errors"
                   MSIDAMSIDRequestId: "FLEXTRCY_MSID-PAIR-ALLOC-UPDATE_20250331151154"
@@ -286,6 +289,7 @@ paths:
 components:
   responses:
     InvalidParameters:
+      title: Invalid parameters
       description: Payload does not conform to API specification
       content:
         application/json:
@@ -295,6 +299,7 @@ components:
               message: "Invalid parameters, please check the API documentation"
 
     AuthorizationError:
+      title: Authorization parameters
       description: Authorization failure (invalid API key or unauthorized username)
       content:
         application/json:
@@ -307,6 +312,7 @@ components:
                   message: "The provided username and partyID combination is not authorized."
 
     InvalidEndpoint:
+      title: Invalid endpoint
       description: Operation type is invalid
       content:
         application/json:
@@ -316,6 +322,7 @@ components:
               message: "Invalid endpoint. Accepted endpoints are: Read, Insert, Update"
 
     LimitErrorReached:
+      title: Error Reached
       description: Errors in the payload exceeds the limit defined inside Salesforce (500)
       content:
         application/json:
@@ -325,6 +332,7 @@ components:
               message: "Wrong Payload: Maximum number of row errors reached (stored_parameter_number 500)"
 
     PayloadLimit:
+      title: Limit Reached
       description: Errors in the payload, volume of records exceeds the Salesforce stored parameter limit (2000)
       content:
         application/json:
