@@ -237,7 +237,7 @@ components:
     
     ReadCase2:
       type: object
-      required: [partyID, username, partyAPIKey, MsidAmsidRequestID]
+      required: [partyID, username, partyAPIKey, pendingFlag, SVABMUnit, effectiveFromDate, effectiveToDate]
       properties:
         partyID:
           type: string
@@ -262,41 +262,12 @@ components:
         effectiveToDate:
           type: string
           pattern: '^\d{8}$'
-          example: "30/08/2025"    
-
-    ReadCase3:
-      type: object
-      required: [partyID, username, partyAPIKey, SVABMUnit, effectiveFromDate, effectiveToDate]
-      properties:
-        partyID:
-          type: string
-          example: "ALEXTRCI"
-        username:
-          type: string
-          example: "email.api@yaml.com"
-        partyAPIKey:
-          type: string
-          example: "68zUNyKoprbKt7ymLN6E/Q=="        
-        SVABMUnit:
-          type: string
-          example: "V__AFLEX002"
-        effectiveFromDate:
-          type: string
-          pattern: '^\d{8}$'
-          example: "01/08/2025"
-        effectiveToDate:
-          type: string
-          pattern: '^\d{8}$'
-          example: "30/08/2025"
-        lastModifiedDate:
-          type: string
-          pattern: '^\d{8}$'
-          example: "30/08/2025"          
-
+          example: "30/08/2025"           
+    
     # ---------- Insert Request Schema ----------
-    InsertRequest:
+    InsertRequest1:
       type: object
-      required: [partyID, username, partyAPIKey]
+      required: [partyID, username, partyAPIKey, MsidAmsidsToInsert]
       properties:
         partyID:
           type: string
