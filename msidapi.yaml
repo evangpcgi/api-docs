@@ -295,6 +295,7 @@ components:
         application/json:
           schema:
             type: object
+            title: "Invalid parameters"
             example:
               message: "Invalid parameters, please check the API documentation"
 
@@ -304,7 +305,8 @@ components:
       content:
         application/json:
           schema:
-            type: object            
+            type: object 
+            title: "Invalid Auth parameters"
             example:
               message: "The provided username and partyID combination is not authorized."
 
@@ -315,6 +317,7 @@ components:
         application/json:
           schema:
             type: object
+            title: "Invalid Endpoint"
             example:
               message: "Invalid endpoint. Accepted endpoints are: Read, Insert, Update"
 
@@ -325,6 +328,7 @@ components:
         application/json:
           schema:
             type: object
+            title: "Error Limit"
             example:
               message: "Wrong Payload: Maximum number of row errors reached (stored_parameter_number 500)"
 
@@ -335,5 +339,6 @@ components:
         application/json:
           schema:
             type: object
+            title: "Volume Error"
             example:
               message: "Payload too large, exceeded maximum number of records allowed in Update API"   
