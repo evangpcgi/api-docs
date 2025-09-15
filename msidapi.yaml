@@ -246,7 +246,7 @@ components:
     
     ReadCase2:
       type: object
-      required: [partyID, username, partyAPIKey, pendingFlag, SVABMUnit, effectiveFromDate, effectiveToDate]
+      required: [partyID, username, partyAPIKey, SVABMUnit, effectiveFromDate, effectiveToDate]
       properties:
         partyID:
           type: string
