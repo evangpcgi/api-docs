@@ -304,12 +304,9 @@ components:
       content:
         application/json:
           schema:
-            type: object
-            oneOf:
-              - example:
-                  message: "The provided username and party combination is not authorized."
-              - example:
-                  message: "The provided username and partyID combination is not authorized."
+            type: object            
+            example:
+              message: "The provided username and partyID combination is not authorized."
 
     InvalidEndpoint:
       title: Invalid endpoint
