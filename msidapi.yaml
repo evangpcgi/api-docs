@@ -57,7 +57,8 @@ paths:
                 oneOf:
                   - $ref: '#/components/schemas/InvalidParameters'
                   - $ref: '#/components/schemas/LimitErrorReached'
-                  - $ref: '#/components/schemas/PayloadLimit'                  
+                  - $ref: '#/components/schemas/PayloadLimit'
+                  - $ref: '#/components/schemas/PayloadDatesLimit'
         '403':
           $ref: '#/components/responses/AuthorizationError'
 
@@ -119,8 +120,7 @@ paths:
                   - $ref: '#/components/schemas/InsertBusinessValidation'
                   - $ref: '#/components/schemas/InvalidParameters'
                   - $ref: '#/components/schemas/LimitErrorReached'
-                  - $ref: '#/components/schemas/PayloadLimit'
-                  - $ref: '#/components/schemas/PayloadDatesLimit'
+                  - $ref: '#/components/schemas/PayloadLimit'                  
         '403':
           $ref: '#/components/responses/AuthorizationError'
 
@@ -224,7 +224,7 @@ components:
         message:
           type: string
       example:
-        message: "Payload too large, exceeded maximum number of records allowed in Create API"
+        message: "Error message: Date Range is greater than the limit specified > 360 days."
      
     InsertSchemaValidation:
       type: object
