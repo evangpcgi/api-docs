@@ -304,6 +304,7 @@ components:
           example: "email.api@yaml.com"
         partyAPIKey:
           type: string
+          maxLength: 255
           example: "68zUNyKoprbKt7ymLN6E/Q=="
         MsidAmsidRequestID:
           type: string
@@ -323,6 +324,7 @@ components:
           example: "email.api@yaml.com"
         partyAPIKey:
           type: string
+          maxLength: 255
           example: "68zUNyKoprbKt7ymLN6E/Q=="        
         pendingFlag:
           type: string
@@ -342,6 +344,7 @@ components:
           example: "email.api@yaml.com"
         partyAPIKey:
           type: string
+          maxLength: 255
           example: "68zUNyKoprbKt7ymLN6E/Q=="                
         SVABMUnit:
           type: string
@@ -369,6 +372,7 @@ components:
           example: "email.api@yaml.com"
         partyAPIKey:
           type: string
+          maxLength: 255
           example: "68zUNyKoprbKt7ymLN6E/Q=="                
         pendingFlag:
           type: string
@@ -401,6 +405,7 @@ components:
           example: "email.api@yaml.com"
         partyAPIKey:
           type: string
+          maxLength: 255
           example: "68zUNyKoprbKt7ymLN6E/Q=="
         MsidAmsidsToInsert:
           type: array
@@ -433,6 +438,7 @@ components:
           example: "email.api@yaml.com"
         partyAPIKey:
           type: string
+          maxLength: 255
           example: "68zUNyKoprbKt7ymLN6E/Q=="
         MsidAmsidsToUpdate:
           type: array
@@ -464,6 +470,7 @@ components:
           example: "email.api@yaml.com"
         partyAPIKey:
           type: string
+          maxLength: 255
           example: "68zUNyKoprbKt7ymLN6E/Q=="
         ConsentFlagsToUpdate:
           type: array
