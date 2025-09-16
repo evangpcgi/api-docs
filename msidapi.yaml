@@ -1,6 +1,6 @@
 openapi: 3.0.3
 info:
-  title: MSID Management API 2
+  title: MSID Management API
   description: API for reading, inserting, and updating MSID records. All endpoints require authorization parameters in the request body.
   version: 1.0.0
 
