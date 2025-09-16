@@ -1,7 +1,7 @@
 openapi: 3.0.3
 info:
   title: MSID Management API
-  description: API for reading, inserting, and updating MSID records. All endpoints require authorization parameters in the request body.
+  description: API for reading, inserting, and updating MSID Pair records and their allocation to SBMUs.
   version: 1.0.0
 
 paths:
@@ -61,6 +61,9 @@ paths:
         '403':
           $ref: '#/components/responses/AuthorizationError'
 
+        '401':
+          $ref: '#/components/responses/SessionExpiredError'  
+
   /insert:
     post:
       summary: /Insert Endpoint
@@ -72,12 +75,12 @@ paths:
         4. Effective To Settlement Date {MSIDP} (DD/MM/YYYY) *
         5. Import MSID (13 chars) *
         6. Import MSID Customer Consent Flag (Y/N) *
-        7. Effective From Settlement Date {ICCF} (DD/MM/YYYY) *
-        8. Effective To Settlement Date {ICCF} (DD/MM/YYYY) *
+        7. Effective From Settlement Date {ICEFD} (DD/MM/YYYY) *
+        8. Effective To Settlement Date {ICETD} (DD/MM/YYYY) *
         9. Export MSID (13 chars)
         10. Export MSID Customer Consent Flag (Y/N)
-        11. Effective From Settlement Date {ECCF} (DD/MM/YYYY)
-        12. Effective To Settlement Date {ECCF} (DD/MM/YYYY)
+        11. Effective From Settlement Date {ECEFD} (DD/MM/YYYY)
+        12. Effective To Settlement Date {ECETD} (DD/MM/YYYY)
       requestBody:
         required: true
         content:
@@ -117,8 +120,12 @@ paths:
                   - $ref: '#/components/schemas/InvalidParameters'
                   - $ref: '#/components/schemas/LimitErrorReached'
                   - $ref: '#/components/schemas/PayloadLimit'
+                  - $ref: '#/components/schemas/PayloadDatesLimit'
         '403':
           $ref: '#/components/responses/AuthorizationError'
+
+        '401':
+          $ref: '#/components/responses/SessionExpiredError'  
 
   /update:
     post:
@@ -178,8 +185,11 @@ paths:
                   - $ref: '#/components/schemas/InvalidParameters'
                   - $ref: '#/components/schemas/LimitErrorReached'
                   - $ref: '#/components/schemas/PayloadLimit'
+        '401':
+          $ref: '#/components/responses/SessionExpiredError'
+
         '403':
-          $ref: '#/components/responses/AuthorizationError'
+          $ref: '#/components/responses/AuthorizationError' 
 
 components:
   schemas:
@@ -207,6 +217,14 @@ components:
           type: string
       example:
         message: "Payload too large, exceeded maximum number of records allowed in Update API"
+        
+    PayloadDatesLimit:
+      type: object
+      properties:
+        message:
+          type: string
+      example:
+        message: "Payload too large, exceeded maximum number of records allowed in Create API"
      
     InsertSchemaValidation:
       type: object
@@ -256,6 +274,14 @@ components:
       example:
         message: "The provided username and partyID combination is not authorized."
 
+    SessionExpiredError:
+      type: object
+      properties:
+        message:
+          type: string
+      example:
+        message: "Session expired or invalid."
+    
     InvalidEndpoint:
       type: object
       properties:
@@ -272,8 +298,9 @@ components:
         partyID:
           type: string
           example: "ALEXTRCI"
+          maxLength: 8
         username:
-          type: string
+          type: email
           example: "email.api@yaml.com"
         partyAPIKey:
           type: string
@@ -289,8 +316,9 @@ components:
         partyID:
           type: string
           example: "ALEXTRCI"
+          maxLength: 8
         username:
-          type: string
+          type: email
           example: "email.api@yaml.com"
         partyAPIKey:
           type: string
@@ -307,8 +335,9 @@ components:
         partyID:
           type: string
           example: "ALEXTRCI"
+          maxLength: 8
         username:
-          type: string
+          type: email
           example: "email.api@yaml.com"
         partyAPIKey:
           type: string
@@ -332,8 +361,9 @@ components:
         partyID:
           type: string
           example: "ALEXTRCI"
+          maxLength: 8
         username:
-          type: string
+          type: email
           example: "email.api@yaml.com"
         partyAPIKey:
           type: string
@@ -362,8 +392,9 @@ components:
         partyID:
           type: string
           example: "ALEXTRCI"
+          maxLength: 8
         username:
-          type: string
+          type: email
           example: "email.api@yaml.com"
         partyAPIKey:
           type: string
@@ -378,7 +409,7 @@ components:
                 description: "Row index"                
               data:
                 type: string
-                description: "BMUnitID,GSPGroup,MSIDP,MSIDP,ImportMSID,ImportConsentFlag,ICCF,ICCF,ExportMSID,ExportConsentFlag,ECCF,ECCF"                                  
+                description: "BMUnitID,GSPGroup,MSIDP,MSIDP,ImportMSID,ImportConsentFlag,ICEFD,ICETD,ExportMSID,ExportConsentFlag,ECEFD,ECETD"                                  
             example: [
               {"row": "1", "data": "V__AFLEX002,_A,02/09/2025,20/10/2025,1800061146877,Y,02/09/2025,20/10/2025,1800061146886,Y,02/09/2025,20/10/2025"},
               {"row": "2", "data": "V__AFLEX002,_A,02/09/2025,20/10/2025,1800061146877,Y,02/09/2025,20/10/2025,,,,"}
