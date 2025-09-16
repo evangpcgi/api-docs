@@ -307,6 +307,7 @@ components:
           example: "68zUNyKoprbKt7ymLN6E/Q=="
         MsidAmsidRequestID:
           type: string
+          maxLength: 100
           example: "ALEXTRCI_MSID-PAIR-ALLOC-CREATE_20250804155244"    
     
     ReadCase2:
@@ -344,6 +345,7 @@ components:
           example: "68zUNyKoprbKt7ymLN6E/Q=="                
         SVABMUnit:
           type: string
+          maxLength: 11
           example: "V__AFLEX002"
         effectiveFromDate:
           type: string
@@ -370,10 +372,11 @@ components:
           example: "68zUNyKoprbKt7ymLN6E/Q=="                
         pendingFlag:
           type: string
-          enum: [D,P,PA,S]
+          enum: [D,P,PA,S]          
           example: "S"
         SVABMUnit:
           type: string
+          maxLength: 11
           example: "V__AFLEX002"
         effectiveFromDate:
           type: string
@@ -424,8 +427,9 @@ components:
         partyID:
           type: string
           example: "ALEXTRCI"
+          maxLength: 8
         username:
-          type: string
+          type: email
           example: "email.api@yaml.com"
         partyAPIKey:
           type: string
@@ -453,9 +457,10 @@ components:
       properties:
         partyID:
           type: string
+          maxLength: 8
           example: "ALEXTRCI"
         username:
-          type: string
+          type: email
           example: "email.api@yaml.com"
         partyAPIKey:
           type: string
@@ -483,3 +488,10 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/AuthorizationError'
+
+    SessionExpiredError:
+      description: Session expired or invalid.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/AuthorizationError'        
