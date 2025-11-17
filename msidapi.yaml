@@ -1,8 +1,15 @@
+# Latest update: Added Bearer token security and servers section for production URL
+# Version: 1.0.1
 openapi: 3.0.3
 info:
   title: MSID Management API
   description: API for reading, inserting, and updating MSID Pair records and their allocation to SBMUs.
-  version: 1.0.0
+  version: 1.0.1
+servers:
+  - url: https://elexon.my.salesforce.com/services/apexrest/MsidAmsidPairs
+    description: Production API
+security:
+  - BearerAuth: []
 
 paths:
   /read:
@@ -192,6 +199,11 @@ paths:
           $ref: '#/components/responses/AuthorizationError' 
 
 components:
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+      
   schemas:
     # ---------- Error Schemas ----------
     InvalidParameters:
