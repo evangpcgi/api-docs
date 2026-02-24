@@ -539,7 +539,6 @@ components:
         - username
         - partyAPIKey
         - MsidAmsidRequestID
-        - pendingFlag
       properties:
         partyID:
           type: string
