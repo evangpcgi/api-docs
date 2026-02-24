@@ -515,7 +515,7 @@ components:
         - partyID
         - username
         - partyAPIKey
-        - MsidAmsidsToInsert
+        - MsidAmsidRequestID
       properties:
         partyID:
           type: string
@@ -538,7 +538,8 @@ components:
         - partyID
         - username
         - partyAPIKey
-        - MsidAmsidsToInsert
+        - MsidAmsidRequestID
+        - pendingFlag
       properties:
         partyID:
           type: string
@@ -582,7 +583,7 @@ components:
           type: string
           maxLength: 255
           example: 68zUNyKoprbKt7ymLN6E/Q==
-        MsidAmsidsToInsert:
+        MsidsToInsert:
           type: array
           items:
             type: object
@@ -617,7 +618,7 @@ components:
           type: string
           maxLength: 255
           example: 68zUNyKoprbKt7ymLN6E/Q==
-        MsidAmsidsToInsert:
+        AmsidsToInsert:
           type: array
           items:
             type: object
