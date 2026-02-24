@@ -1,0 +1,724 @@
+---
+openapi: 3.0.3
+info:
+  title: MSID/AMSID Management API
+  description: API for reading (MSIDs/AMSIDs), inserting (MSIDs/AMSIDs) and
+    updating MSID Pair records and their allocation to SBMUs.
+  version: 1.0.1
+servers:
+  - url: https://elexon.my.salesforce.com/services/apexrest/MsidAmsidPairs
+    description: Production API
+security:
+  - BearerAuth: []
+paths:
+  /Read:
+    post:
+      summary: /Read Endpoint
+      description: >+
+        Retrieve existing Msid Pairs in the system given the filter
+        criteria (*mandatory **conditional):
+
+        1. partyID * (Party ID as shown in Account Info)
+
+        2. username * (Email of authorized signatory/contact)
+
+        3. partyAPIKey * (Key as received in email after requesting party key)
+
+        4. MsidAmsidRequestID (Batch request ID from a previous Insert or Update operation)
+
+        5. pendingFlag (Filter by status code D, P, PA, S, R)
+
+        6. SVABMUnit ** (Must be an existing SVA BM unit. Required when pendingFlag ≠ R without a MsidAmsidRequestID)
+
+        7. effectiveFromDate ** (required when SVABMUnit populated) 
+
+        8. effectiveToDate ** (required when SVABMUnit populated) 
+
+        9. lastModifiedDate (Can be used with any pendingFlag. Helps refine large result sets near the 5,000-record limit)
+                  
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              oneOf:
+                - $ref: "#/components/schemas/ReadCase1"
+                - $ref: "#/components/schemas/ReadCase2"
+                - $ref: "#/components/schemas/ReadCase3"
+                - $ref: "#/components/schemas/ReadCase4"
+      responses:
+        "200":
+          description: List of MSIDs matching filters
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  SVA_BM_Unit: V__AFLEX001
+                  Pending_Flag: S
+                  MSID_Pair_ID: a0sAe000001xJvhIAE
+                  Last_Modified_Date: 2025-07-02 14:39:47
+                  Import_Reject_Reasons: ""
+                  Import_Metering_System: "4883772918844"
+                  GSP_Group: _P
+                  Export_Reject_Reasons: ""
+                  Export_Metering_System: ""
+                  Effective_To_Settlement_Date: 02/07/2025
+                  Effective_From_Settlement_Date: 29/04/2025
+        "400":
+          description: Bad Request - Invalid parameters or limits reached
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - $ref: "#/components/schemas/InvalidParameters"
+                  - $ref: "#/components/schemas/LimitErrorReached"
+                  - $ref: "#/components/schemas/PayloadLimit"
+                  - $ref: "#/components/schemas/PayloadDatesLimit"
+        "401":
+          $ref: "#/components/responses/SessionExpiredError"
+        "403":
+          $ref: "#/components/responses/AuthorizationError"
+  /ReadAmsid:
+    post:
+      summary: /ReadAmsid Endpoint
+      description: >+
+        Retrieve existing Amsids in the system given the filter criteria
+        (*mandatory **conditional):
+
+        1. partyID * (Party ID as shown in Account Info)
+
+        2. username * (Email of authorized signatory/contact)
+
+        3. partyAPIKey * (Key as received in email after requesting party key)
+
+        4. MsidAmsidRequestID (Batch request ID from a previous Insert or Update operation)
+
+        5. pendingFlag ** (Filter by status code D, P, S, R)        
+                  
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              oneOf:
+                - $ref: "#/components/schemas/AmsidReadCase1"
+                - $ref: "#/components/schemas/AmsidReadCase2"
+      responses:
+        "200":
+          description: List of AMSIDs matching filters
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  SVA_BM_Unit: V__HAXLE001
+                  Registration_Stage: 1
+                  Post_Code: KY13NW
+                  Pending_Flag: P
+                  MSIDAMSID_Request_ID: AXLEENER_AMSID-PAIR-ALLOC-CREATE_20260224171003
+                  Measurement_Transformer_Indicator: F
+                  Import_MSID: 2000022017780
+                  Import_AMSID: 7700000015335
+                  GSP_Group_Id: _H
+                  Asset_Voltage: 1252
+                  Asset_Type: BatteryStorage
+                  Asset_Registration_ID: NFL0100
+                  Asset_Capacity: 123
+                  AMVLP: AXLEENER
+                  AMSID_Pair_ETD: 2026-12-31
+                  AMSID_Pair_EFD: 2026-12-02
+                  Address_Line_4: KIRKCALDY
+                  Address_Line_3: HEATHERYWOOD ROAD
+                  Address_Line_2: LAND EAST OF REDHOUSE ELECTRICITY
+                  Address_Line_1: SOUTH REDHOUSE ESS
+        "400":
+          description: Bad Request - Invalid parameters or limits reached
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - $ref: "#/components/schemas/InvalidParameters"
+                  - $ref: "#/components/schemas/LimitErrorReached"
+                  - $ref: "#/components/schemas/PayloadLimit"
+                  - $ref: "#/components/schemas/PayloadDatesLimit"
+        "401":
+          $ref: "#/components/responses/SessionExpiredError"
+        "403":
+          $ref: "#/components/responses/AuthorizationError"
+  /Insert:
+    post:
+      summary: /Insert Endpoint
+      description: >
+        Comma Separated Values string with MSID data fields in order
+        (*)mandatory:
+
+        1. BMUnitID (max 11 chars) *
+
+        2. GSPGroup (2 chars) *
+
+        3. Effective From Settlement Date {MSIDP} (DD/MM/YYYY) *
+
+        4. Effective To Settlement Date {MSIDP} (DD/MM/YYYY) *
+
+        5. Import MSID (13 chars) *
+
+        6. Import MSID Customer Consent Flag (Y/N) *
+
+        7. Effective From Settlement Date {ICEFD} (DD/MM/YYYY) *
+
+        8. Effective To Settlement Date {ICETD} (DD/MM/YYYY) *
+
+        9. Export MSID (13 chars)
+
+        10. Export MSID Customer Consent Flag (Y/N)
+
+        11. Effective From Settlement Date {ECEFD} (DD/MM/YYYY)
+
+        12. Effective To Settlement Date {ECETD} (DD/MM/YYYY)
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              oneOf:
+                - $ref: "#/components/schemas/InsertMsidsRequest"
+                - $ref: "#/components/schemas/InsertAmsidsRequest"
+      responses:
+        "200":
+          description: MSIDs processed successfully and accepted
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  status: Accepted
+                  requestId: FLEXTRCY_MSID-PAIR-ALLOC-CREATE_20250331151154
+        "202":
+          description: Partial success with errors
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  status: Accepted_with_errors
+                  MSIDAMSIDRequestId: FLEXTRCY_MSID-PAIR-ALLOC-CREATE_20250331151154
+                  errors:
+                    - row: "1"
+                      data: The MSID Pair Effective From Date must be at least 1 Working Day in the
+                        future.
+        "400":
+          description: Bad Request - Invalid parameters or limits reached
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - $ref: "#/components/schemas/InsertSchemaValidation"
+                  - $ref: "#/components/schemas/InsertBusinessValidation"
+                  - $ref: "#/components/schemas/InvalidParameters"
+                  - $ref: "#/components/schemas/LimitErrorReached"
+                  - $ref: "#/components/schemas/PayloadLimit"
+        "401":
+          $ref: "#/components/responses/SessionExpiredError"
+        "403":
+          $ref: "#/components/responses/AuthorizationError"
+  /Update:
+    post:
+      summary: /Update Endpoint
+      description: >
+        Comma Separated Values string with MSID data fields in order
+        (*)mandatory:
+
+
+        Effective to Settlement Date
+
+        1. MSIDPairID (Unique Kinnect Customer Solutions portal ID for the MSID Pair) *        
+
+        2. Effective To Settlement Date {MSIDP} (DD/MM/YYYY) *
+
+
+        Consent Information
+
+        1. MSIDPairID (Unique Kinnect Customer Solutions portal ID for the MSID Pair) *
+
+        2. MSID (Import or Export MSID associated with the MSID Pair) *
+
+        3. CustomerConsentFlag (Consent status Y/N) *        
+
+        4. ConsentEffectiveFromDate (Date from which consent is effective) *        
+
+        5. FlowDirection (Import/Export) * 
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              oneOf:
+                - $ref: "#/components/schemas/UpdateMSIDETD"
+                - $ref: "#/components/schemas/UpdateConsentFlag"
+      responses:
+        "200":
+          description: MSIDs updated successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  status: Accepted
+                  MSIDAMSIDRequestId: FLEXTRCY_MSID-PAIR-ALLOC-UPDATE_20250331151154
+        "202":
+          description: Partial success with errors
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  status: Accepted_with_errors
+                  MSIDAMSIDRequestId: FLEXTRCY_MSID-PAIR-ALLOC-UPDATE_20250331151154
+                  errors:
+                    - row: "1"
+                      data: MSID Pair must be in Pending Status 'S'
+        "400":
+          description: Bad Request - Invalid parameters or limits reached
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - $ref: "#/components/schemas/UpdateSchemaValidation"
+                  - $ref: "#/components/schemas/UpdateETDBusinessValidation"
+                  - $ref: "#/components/schemas/UpdateConsentFlagBusinessValidation"
+                  - $ref: "#/components/schemas/InvalidParameters"
+                  - $ref: "#/components/schemas/LimitErrorReached"
+                  - $ref: "#/components/schemas/PayloadLimit"
+        "401":
+          $ref: "#/components/responses/SessionExpiredError"
+        "403":
+          $ref: "#/components/responses/AuthorizationError"
+components:
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+  schemas:
+    InvalidParameters:
+      type: object
+      properties:
+        message:
+          type: string
+      example:
+        message: Invalid parameters, please check the API documentation
+    LimitErrorReached:
+      type: object
+      properties:
+        message:
+          type: string
+      example:
+        message: "Wrong Payload: Maximum number of row errors reached
+          (stored_parameter_number 500)"
+    PayloadLimit:
+      type: object
+      properties:
+        message:
+          type: string
+      example:
+        message: Payload too large, exceeded maximum number of records allowed in Update
+          API
+    PayloadDatesLimit:
+      type: object
+      properties:
+        message:
+          type: string
+      example:
+        message: "Error message: Date Range is greater than the limit specified > 360
+          days."
+    InsertSchemaValidation:
+      type: object
+      properties:
+        message:
+          type: string
+      example:
+        message: "Incorrect field length: GSP Group."
+    InsertBusinessValidation:
+      type: object
+      properties:
+        message:
+          type: string
+      example:
+        message: The MSID Pair GSP Group must be in the same GSP Group of the associated
+          BM Unit.
+    UpdateSchemaValidation:
+      type: object
+      properties:
+        message:
+          type: string
+      example:
+        message: "Incorrect field length: MSID Pair ID."
+    UpdateETDBusinessValidation:
+      type: object
+      properties:
+        message:
+          type: string
+      example:
+        message: MSID Pair records cannot be changed to a later Effective To Date.
+    UpdateConsentFlagBusinessValidation:
+      type: object
+      properties:
+        message:
+          type: string
+      example:
+        message: MSID Pair must be in Pending Status 'S'.
+    AuthorizationError:
+      type: object
+      properties:
+        message:
+          type: string
+      example:
+        message: The provided username and partyID combination is not authorized.
+    SessionExpiredError:
+      type: object
+      properties:
+        message:
+          type: string
+      example:
+        message: Session expired or invalid.
+    InvalidEndpoint:
+      type: object
+      properties:
+        message:
+          type: string
+      example:
+        message: "Invalid endpoint. Accepted endpoints are: Read, Insert, Update"
+    ReadCase1:
+      type: object
+      required:
+        - partyID
+        - username
+        - partyAPIKey
+      properties:
+        partyID:
+          type: string
+          example: ALEXTRCI
+          maxLength: 8
+        username:
+          type: email
+          example: email.api@yaml.com
+        partyAPIKey:
+          type: string
+          maxLength: 255
+          example: 68zUNyKoprbKt7ymLN6E/Q==
+        MsidAmsidRequestID:
+          type: string
+          maxLength: 100
+          example: ALEXTRCI_MSID-PAIR-ALLOC-CREATE_20250804155244
+    ReadCase2:
+      type: object
+      required:
+        - partyID
+        - username
+        - partyAPIKey
+      properties:
+        partyID:
+          type: string
+          example: ALEXTRCI
+          maxLength: 8
+        username:
+          type: email
+          example: email.api@yaml.com
+        partyAPIKey:
+          type: string
+          maxLength: 255
+          example: 68zUNyKoprbKt7ymLN6E/Q==
+        pendingFlag:
+          type: string
+          enum:
+            - R
+          example: R
+    ReadCase3:
+      type: object
+      required:
+        - partyID
+        - username
+        - partyAPIKey
+        - SVABMUnit
+        - effectiveFromDate
+        - effectiveToDate
+      properties:
+        partyID:
+          type: string
+          example: ALEXTRCI
+          maxLength: 8
+        username:
+          type: email
+          example: email.api@yaml.com
+        partyAPIKey:
+          type: string
+          maxLength: 255
+          example: 68zUNyKoprbKt7ymLN6E/Q==
+        SVABMUnit:
+          type: string
+          maxLength: 11
+          example: V__AFLEX002
+        effectiveFromDate:
+          type: string
+          pattern: ^\d{8}$
+          example: 01/08/2025
+        effectiveToDate:
+          type: string
+          pattern: ^\d{8}$
+          example: 30/08/2025
+    ReadCase4:
+      type: object
+      required:
+        - partyID
+        - username
+        - partyAPIKey
+        - SVABMUnit
+        - effectiveFromDate
+        - effectiveToDate
+      properties:
+        partyID:
+          type: string
+          example: ALEXTRCI
+          maxLength: 8
+        username:
+          type: email
+          example: email.api@yaml.com
+        partyAPIKey:
+          type: string
+          maxLength: 255
+          example: 68zUNyKoprbKt7ymLN6E/Q==
+        pendingFlag:
+          type: string
+          enum:
+            - D
+            - P
+            - PA
+            - S
+          example: S
+        SVABMUnit:
+          type: string
+          maxLength: 11
+          example: V__AFLEX002
+        effectiveFromDate:
+          type: string
+          pattern: ^\d{8}$
+          example: 01/08/2025
+        effectiveToDate:
+          type: string
+          pattern: ^\d{8}$
+          example: 30/08/2025
+    AmsidReadCase1:
+      type: object
+      required:
+        - partyID
+        - username
+        - partyAPIKey
+        - MsidAmsidsToInsert
+      properties:
+        partyID:
+          type: string
+          example: ALEXTRCI
+          maxLength: 8
+        username:
+          type: email
+          example: email.api@yaml.com
+        partyAPIKey:
+          type: string
+          maxLength: 255
+          example: 68zUNyKoprbKt7ymLN6E/Q==
+        MsidAmsidRequestID:
+          type: string
+          maxLength: 100
+          example: ALEXTRCI_MSID-PAIR-ALLOC-CREATE_20250804155244
+    AmsidReadCase2:
+      type: object
+      required:
+        - partyID
+        - username
+        - partyAPIKey
+        - MsidAmsidsToInsert
+      properties:
+        partyID:
+          type: string
+          example: ALEXTRCI
+          maxLength: 8
+        username:
+          type: email
+          example: email.api@yaml.com
+        partyAPIKey:
+          type: string
+          maxLength: 255
+          example: 68zUNyKoprbKt7ymLN6E/Q==
+        MsidAmsidRequestID:
+          type: string
+          maxLength: 100
+          example: ALEXTRCI_AMSID-PAIR-ALLOC-CREATE_20250804155244
+        pendingFlag:
+          type: string
+          enum:
+            - S
+          example: S
+    InsertMsidsRequest:
+      type: object
+      required:
+        - partyID
+        - username
+        - partyAPIKey
+        - MsidsToInsert
+      properties:
+        partyID:
+          type: string
+          example: ALEXTRCI
+          maxLength: 8
+        username:
+          type: email
+          example: email.api@yaml.com
+        partyAPIKey:
+          type: string
+          maxLength: 255
+          example: 68zUNyKoprbKt7ymLN6E/Q==
+        MsidAmsidsToInsert:
+          type: array
+          items:
+            type: object
+            properties:
+              row:
+                type: string
+                description: Row index
+              data:
+                type: string
+                description: BMUnitID,GSPGroup,MSIDP,MSIDP,ImportMSID,ImportConsentFlag,ICEFD,ICETD,ExportMSID,ExportConsentFlag,ECEFD,ECETD
+            example:
+              - row: "1"
+                data: V__AFLEX002,_A,02/09/2025,20/10/2025,1800061146877,Y,02/09/2025,20/10/2025,1800061146886,Y,02/09/2025,20/10/2025
+              - row: "2"
+                data: V__AFLEX002,_A,02/09/2025,20/10/2025,1800061146877,Y,02/09/2025,20/10/2025,,,,
+    InsertAmsidaRequest:
+      type: object
+      required:
+        - partyID
+        - username
+        - partyAPIKey
+        - AmsidsToInsert
+      properties:
+        partyID:
+          type: string
+          example: ALEXTRCI
+          maxLength: 8
+        username:
+          type: email
+          example: email.api@yaml.com
+        partyAPIKey:
+          type: string
+          maxLength: 255
+          example: 68zUNyKoprbKt7ymLN6E/Q==
+        MsidAmsidsToInsert:
+          type: array
+          items:
+            type: object
+            properties:
+              row:
+                type: string
+                description: Row index
+              data:
+                type: string
+                description: Asset Registration Id,AMVLP MPID,AMVLP Role,Address Line 1,Address
+                  Line 2,Address Line 3,Address Line 4,Address Line 5,Address
+                  Line 6,Postcode,GSP Group Id,BM Unit Id,Export AMSID required
+                  indicator,Asset type,Asset Voltage,Measurement Transformer
+                  Indicator,Asset Capacity,AMSID Pair EFD,AMSID Pair
+                  ETD,Measurement Class,Import MSID,Export MSID
+            example:
+              - row: "1"
+                data: NFL0100001,FLEX,TS,ADRESS 1,ADRESS 2,ADRESS 3,ADRESS 4,ADRESS 5,ADRESS
+                  6,KY1 3NW,_M,po,T,Battery
+                  Storage,1252,T,123,02/10/2026,31/12/2026,C,2376500474019,1801859241286
+              - row: "2"
+                data: NFL0100001,FLEX,TS,ADRESS 1,ADRESS 2,ADRESS 3,ADRESS 4,ADRESS 5,ADRESS
+                  6,KY1 3NW,_M,po,F,Battery
+                  Storage,1252,F,123,02/10/2026,31/12/2026,C,2376500474019,
+    UpdateMSIDETD:
+      title: Update MSID ETD
+      type: object
+      required:
+        - partyID
+        - username
+        - partyAPIKey
+        - MsidAmsidsToUpdate
+      properties:
+        partyID:
+          type: string
+          example: ALEXTRCI
+          maxLength: 8
+        username:
+          type: email
+          example: email.api@yaml.com
+        partyAPIKey:
+          type: string
+          maxLength: 255
+          example: 68zUNyKoprbKt7ymLN6E/Q==
+        MsidAmsidsToUpdate:
+          type: array
+          items:
+            type: object
+            properties:
+              row:
+                type: string
+                description: Row index
+              data:
+                type: string
+                description: MSIDId,EffectiveToSettlementDate
+            example:
+              - row: "1"
+                data: a0sAe000002GIr3HAG,10/10/2025
+              - row: "2"
+                data: a0sAe000002GIr3IAG,11/10/2025
+    UpdateConsentFlag:
+      title: Update MSID Consent Flag
+      type: object
+      required:
+        - partyID
+        - username
+        - partyAPIKey
+        - ConsentFlagsToUpdate
+      properties:
+        partyID:
+          type: string
+          maxLength: 8
+          example: ALEXTRCI
+        username:
+          type: email
+          example: email.api@yaml.com
+        partyAPIKey:
+          type: string
+          maxLength: 255
+          example: 68zUNyKoprbKt7ymLN6E/Q==
+        ConsentFlagsToUpdate:
+          type: array
+          items:
+            type: object
+            properties:
+              row:
+                type: string
+                description: Row index
+              data:
+                type: string
+                description: MSIDId,MPAN,ConsentFlag,ConsentEffectiveFromDate,FlowDirection
+            example:
+              - row: "1"
+                data: a0sAe000002GIr3HAG,1900071112273,N,10/10/2025,Import
+              - row: "2"
+                data: a0sAe000002GIr3HAG,1900071112273,N,10/10/2025,Export
+  responses:
+    AuthorizationError:
+      description: Authorization failure (invalid API key or unauthorized username)
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/AuthorizationError"
+    SessionExpiredError:
+      description: Session expired or invalid.
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/SessionExpiredError"
