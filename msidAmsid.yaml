@@ -102,8 +102,8 @@ paths:
           application/json:
             schema:
               oneOf:
-                - $ref: "#/components/schemas/MSIDReadCase1"
-                - $ref: "#/components/schemas/MSIDReadCase2"
+                - $ref: "#/components/schemas/AmsidReadCase1"
+                - $ref: "#/components/schemas/AmsidReadCase2"
       responses:
         "200":
           description: List of AMSIDs matching filters
@@ -531,7 +531,7 @@ components:
         MsidAmsidRequestID:
           type: string
           maxLength: 100
-          example: ALEXTRCI_MSID-PAIR-ALLOC-CREATE_20250804155244
+          example: ALEXTRCI_AMSID-PAIR-ALLOC-CREATE_20250804155244
     AmsidReadCase2:
       type: object
       required:
