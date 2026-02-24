@@ -102,8 +102,8 @@ paths:
           application/json:
             schema:
               oneOf:
-                - $ref: "#/components/schemas/AMSIDReadCase1"
-                - $ref: "#/components/schemas/AMSIDReadCase2"
+                - $ref: "#/components/schemas/MSIDReadCase1"
+                - $ref: "#/components/schemas/MSIDReadCase2"
       responses:
         "200":
           description: List of AMSIDs matching filters
@@ -146,6 +146,7 @@ paths:
           $ref: "#/components/responses/SessionExpiredError"
         "403":
           $ref: "#/components/responses/AuthorizationError"
+  
   /Insert:
     post:
       summary: /Insert Endpoint
@@ -176,6 +177,7 @@ paths:
         11. Effective From Settlement Date {ECEFD} (DD/MM/YYYY)
 
         12. Effective To Settlement Date {ECETD} (DD/MM/YYYY)
+      
       requestBody:
         required: true
         content:
@@ -625,21 +627,12 @@ components:
                 description: Row index
               data:
                 type: string
-                description: Asset Registration Id,AMVLP MPID,AMVLP Role,Address Line 1,Address
-                  Line 2,Address Line 3,Address Line 4,Address Line 5,Address
-                  Line 6,Postcode,GSP Group Id,BM Unit Id,Export AMSID required
-                  indicator,Asset type,Asset Voltage,Measurement Transformer
-                  Indicator,Asset Capacity,AMSID Pair EFD,AMSID Pair
-                  ETD,Measurement Class,Import MSID,Export MSID
+                description: Asset Registration Id,AMVLP MPID,AMVLP Role,Address Line 1,Address Line 2,Address Line 3,Address Line 4,Address Line 5,Address Line 6,Postcode,GSP Group Id,BM Unit Id,Export AMSID required indicator,Asset type,Asset Voltage,Measurement Transformer Indicator,Asset Capacity,AMSID Pair EFD,AMSID Pair ETD,Measurement Class,Import MSID,Export MSID
             example:
               - row: "1"
-                data: NFL0100001,FLEX,TS,ADRESS 1,ADRESS 2,ADRESS 3,ADRESS 4,ADRESS 5,ADRESS
-                  6,KY1 3NW,_M,po,T,Battery
-                  Storage,1252,T,123,02/10/2026,31/12/2026,C,2376500474019,1801859241286
+                data: NFL0100001,FLEX,TS,ADRESS 1,ADRESS 2,ADRESS 3,ADRESS 4,ADRESS 5,ADRESS 6,KY1 3NW,_M,po,T,Battery Storage,1252,T,123,02/10/2026,31/12/2026,C,2376500474019,1801859241286
               - row: "2"
-                data: NFL0100001,FLEX,TS,ADRESS 1,ADRESS 2,ADRESS 3,ADRESS 4,ADRESS 5,ADRESS
-                  6,KY1 3NW,_M,po,F,Battery
-                  Storage,1252,F,123,02/10/2026,31/12/2026,C,2376500474019,
+                data: NFL0100001,FLEX,TS,ADRESS 1,ADRESS 2,ADRESS 3,ADRESS 4,ADRESS 5,ADRESS 6,KY1 3NW,_M,po,F,Battery Storage,1252,F,123,02/10/2026,31/12/2026,C,2376500474019,    
     UpdateMSIDETD:
       title: Update MSID ETD
       type: object
