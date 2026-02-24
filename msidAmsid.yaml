@@ -42,10 +42,10 @@ paths:
           application/json:
             schema:
               oneOf:
-                - $ref: "#/components/schemas/ReadCase1"
-                - $ref: "#/components/schemas/ReadCase2"
-                - $ref: "#/components/schemas/ReadCase3"
-                - $ref: "#/components/schemas/ReadCase4"
+                - $ref: "#/components/schemas/MSIDReadCase1"
+                - $ref: "#/components/schemas/MSIDReadCase2"
+                - $ref: "#/components/schemas/MSIDReadCase3"
+                - $ref: "#/components/schemas/MSIDReadCase4"
       responses:
         "200":
           description: List of MSIDs matching filters
@@ -102,8 +102,8 @@ paths:
           application/json:
             schema:
               oneOf:
-                - $ref: "#/components/schemas/AmsidReadCase1"
-                - $ref: "#/components/schemas/AmsidReadCase2"
+                - $ref: "#/components/schemas/AMSIDReadCase1"
+                - $ref: "#/components/schemas/AMSIDReadCase2"
       responses:
         "200":
           description: List of AMSIDs matching filters
@@ -388,7 +388,7 @@ components:
           type: string
       example:
         message: "Invalid endpoint. Accepted endpoints are: Read, Insert, Update"
-    ReadCase1:
+    MSIDReadCase1:
       type: object
       required:
         - partyID
@@ -410,7 +410,7 @@ components:
           type: string
           maxLength: 100
           example: ALEXTRCI_MSID-PAIR-ALLOC-CREATE_20250804155244
-    ReadCase2:
+    MSIDReadCase2:
       type: object
       required:
         - partyID
@@ -433,7 +433,7 @@ components:
           enum:
             - R
           example: R
-    ReadCase3:
+    MSIDReadCase3:
       type: object
       required:
         - partyID
@@ -466,7 +466,7 @@ components:
           type: string
           pattern: ^\d{8}$
           example: 30/08/2025
-    ReadCase4:
+    MSIDReadCase4:
       type: object
       required:
         - partyID
@@ -556,7 +556,10 @@ components:
         pendingFlag:
           type: string
           enum:
+            - D
+            - P
             - S
+            - R
           example: S
     InsertMsidsRequest:
       type: object
@@ -593,7 +596,7 @@ components:
                 data: V__AFLEX002,_A,02/09/2025,20/10/2025,1800061146877,Y,02/09/2025,20/10/2025,1800061146886,Y,02/09/2025,20/10/2025
               - row: "2"
                 data: V__AFLEX002,_A,02/09/2025,20/10/2025,1800061146877,Y,02/09/2025,20/10/2025,,,,
-    InsertAmsidaRequest:
+    InsertAmsidsRequest:
       type: object
       required:
         - partyID
