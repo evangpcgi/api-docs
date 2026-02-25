@@ -151,8 +151,9 @@ paths:
     post:
       summary: /Insert Endpoint
       description: >
-        Comma Separated Values JSON with MSID data fields in order (*)mandatory:        
-        
+        Comma Separated Values JSON with MSID data fields in order (*)mandatory:
+
+
         1. partyID * (Party ID as shown in Account Info)
 
         2. username * (Email of authorized signatory/contact)
@@ -160,9 +161,11 @@ paths:
         3. partyAPIKey * (Key as received in email after requesting party key)
 
         4. MsidsToInsert * (Comma separated values (12))
-        
-        Comma Separated Values JSON with AMSID data fields in order (*)mandatory:        
-        
+
+
+        Comma Separated Values JSON with AMSID data fields in order (*)mandatory:
+
+
         1. partyID * (Party ID as shown in Account Info)
 
         2. username * (Email of authorized signatory/contact)
