@@ -211,11 +211,13 @@ paths:
             application/json:
               schema:
                 oneOf:
-                  - $ref: "#/components/schemas/InsertSchemaValidation"
-                  - $ref: "#/components/schemas/InsertBusinessValidation"
                   - $ref: "#/components/schemas/InvalidParameters"
                   - $ref: "#/components/schemas/LimitErrorReached"
                   - $ref: "#/components/schemas/PayloadLimit"
+                  - $ref: "#/components/schemas/InsertMSIDSchemaValidation"
+                  - $ref: "#/components/schemas/InsertMSIDBusinessValidation"
+                  - $ref: "#/components/schemas/InsertAMSIDSchemaValidation"
+                  - $ref: "#/components/schemas/InsertAMSIDBusinessValidation"                  
         "401":
           $ref: "#/components/responses/SessionExpiredError"
         "403":
@@ -329,7 +331,7 @@ components:
       example:
         message: "Error message: Date Range is greater than the limit specified > 360
           days."
-    InsertSchemaValidation:
+    InsertMSIDSchemaValidation:
       type: object
       properties:
         status:
@@ -348,35 +350,129 @@ components:
         errors:
         - row: "1"
           data: "Incorrect field length: GSP Group."
-    InsertBusinessValidation:
+    InsertMSIDBusinessValidation:
       type: object
       properties:
+        status:
+          type: string
+        errors:
+          type: array
+          items:
+            type: object
+            properties:
+              row:
+                type: string
+              data:
+                type: string
+      example:
+        status: Payload_Failed
+        errors:
+        - row: "1"
+          data: "The MSID Pair GSP Group must be in the same GSP Group of the associated BM Unit."
+    InsertAMSIDSchemaValidation:
+      type: object
+      properties:
+        status:
+          type: string
         message:
           type: string
+        errors:
+          type: array
+          items:
+            type: object
+            properties:
+              row:
+                type: string
+              data:
+                type: string
       example:
-        message: The MSID Pair GSP Group must be in the same GSP Group of the associated
-          BM Unit.
+        status: Payload_Failed
+        message: Error count greater than zero but less than error limit (500). Between 1 and 500 record-level errors detected.
+        errors:
+        - row: "1"
+          data: "Missing Value: Role Code (must be 2 characters)"
+    InsertAMSIDBusinessValidation:
+      type: object
+      properties:
+        status:
+          type: string
+        message:
+          type: string
+        errors:
+          type: array
+          items:
+            type: object
+            properties:
+              row:
+                type: string
+              data:
+                type: string
+              assetRegistrationId:
+                type: string
+      example:
+        status: Payload_Failed
+        message: Error count greater than zero but less than error limit (500). Between 1 and 500 record-level errors detected.
+        errors:
+        - row: "1"
+          data: "The MSID Pair GSP Group must be in the same GSP Group of the associated BM Unit."
+          assetRegistrationId: "ASSET001"
     UpdateSchemaValidation:
       type: object
       properties:
-        message:
+        status:
           type: string
+        errors:
+          type: array
+          items:
+            type: object
+            properties:
+              row:
+                type: string
+              data:
+                type: string
       example:
-        message: "Incorrect field length: MSID Pair ID."
+        status: Payload_Failed
+        errors:
+        - row: "1"
+          data: "Incorrect field length: MSID Pair ID."
     UpdateETDBusinessValidation:
       type: object
       properties:
-        message:
+        status:
           type: string
+        errors:
+          type: array
+          items:
+            type: object
+            properties:
+              row:
+                type: string
+              data:
+                type: string
       example:
-        message: MSID Pair records cannot be changed to a later Effective To Date.
+        status: Payload_Failed
+        errors:
+        - row: "1"
+          data: "MSID Pair records cannot be changed to a later Effective To Date."
     UpdateConsentFlagBusinessValidation:
       type: object
       properties:
-        message:
+        status:
           type: string
+        errors:
+          type: array
+          items:
+            type: object
+            properties:
+              row:
+                type: string
+              data:
+                type: string
       example:
-        message: MSID Pair must be in Pending Status 'S'.
+        status: Payload_Failed
+        errors:
+        - row: "1"
+          data: "MSID Pair must be in Pending Status 'S'."
     AuthorizationError:
       type: object
       properties:
@@ -397,7 +493,7 @@ components:
         message:
           type: string
       example:
-        message: "Invalid endpoint. Accepted endpoints are: Read, Insert, Update"
+        message: "Invalid endpoint. Accepted endpoints are: Read, ReadAmsid, Insert, Update"
     MSIDReadCase1:
       type: object
       required:
