@@ -332,10 +332,22 @@ components:
     InsertSchemaValidation:
       type: object
       properties:
-        message:
+        status:
           type: string
+        errors:
+          type: array
+          items:
+            type: object
+            properties:
+              row:
+                type: string
+              data:
+                type: string
       example:
-        message: "Incorrect field length: GSP Group."
+        status: Payload_Failed
+        errors:
+        - row: "1"
+          data: "Incorrect field length: GSP Group."
     InsertBusinessValidation:
       type: object
       properties:
