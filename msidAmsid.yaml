@@ -151,33 +151,46 @@ paths:
     post:
       summary: /Insert Endpoint
       description: >
-        Comma Separated Values string with MSID data fields in order
+        Comma Separated Values string with data fields in order
         (*)mandatory:
-
+        [MsidsToInsert]
         1. BMUnitID (max 11 chars) *
-
         2. GSPGroup (2 chars) *
-
         3. Effective From Settlement Date {MSIDP} (DD/MM/YYYY) *
-
         4. Effective To Settlement Date {MSIDP} (DD/MM/YYYY) *
-
         5. Import MSID (13 chars) *
-
         6. Import MSID Customer Consent Flag (Y/N) *
-
         7. Effective From Settlement Date {ICEFD} (DD/MM/YYYY) *
-
         8. Effective To Settlement Date {ICETD} (DD/MM/YYYY) *
-
         9. Export MSID (13 chars)
-
         10. Export MSID Customer Consent Flag (Y/N)
-
         11. Effective From Settlement Date {ECEFD} (DD/MM/YYYY)
-
         12. Effective To Settlement Date {ECETD} (DD/MM/YYYY)
-      
+
+        [AmsidsToInsert]
+        1. Asset Registration Id (text(10)) *
+        2. AMVLP or Supplier Id  (text(4)) *
+        3. AMVLP or Supplier Role (text(2)) *
+        4. Address Line 1 (text(40)) *
+        5. Address Line 2 (text(40)) 
+        6. Address Line 3 (text(40)) 
+        7. Address Line 4 (text(40)) 
+        8. Address Line 5 (text(40)) 
+        9. Address Line 6 (text(40)) 
+        10. Postcode (text(10)) *
+        11. GSP Group Id (text(2)) *
+        12. BM Unit Id (text(11)) O (For Supplier Only)
+        13. Export AMSID required indicator (boolean) *
+        14. Asset type (text(20)) *
+        15. Asset Voltage (integer(6)) *
+        16. Measurement Transformer Indicator (boolean) *
+        17. Asset Capacity (integer(6)) *
+        18. AMSID Pair EFD (DD/MM/YYYY) *
+        19. AMSID Pair ETD (DD/MM/YYYY) * 
+        20. Measurement Class (text(1)) *
+        21. Import MSID (integer(13)) *
+        22. Export MSID (integer(13)) 
+
       requestBody:
         required: true
         content:
