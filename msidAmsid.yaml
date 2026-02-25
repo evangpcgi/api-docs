@@ -24,7 +24,7 @@ paths:
 
         3. partyAPIKey * (Key as received in email after requesting party key)
 
-        4. MsidAmsidRequestID (Batch request ID from a previous Insert or Update operation)
+        4. msidAmsidRequestID (Batch request ID from a previous Insert or Update operation)
 
         5. pendingFlag (Filter by status code D, P, PA, S, R)
 
@@ -92,7 +92,7 @@ paths:
 
         3. partyAPIKey * (Key as received in email after requesting party key)
 
-        4. MsidAmsidRequestID (Batch request ID from a previous Insert or Update operation)
+        4. msidAmsidRequestID (Batch request ID from a previous Insert or Update operation)
 
         5. pendingFlag ** (Filter by status code D, P, S, R)        
                   
@@ -192,7 +192,7 @@ paths:
                 example:
                   status: Accepted
                   requestId: FLEXTRCY_MSID-PAIR-ALLOC-CREATE_20250331151154
-        "202":
+        "999":
           description: Partial success with errors
           content:
             application/json:
@@ -200,11 +200,19 @@ paths:
                 type: object
                 example:
                   status: Accepted_with_errors
-                  MSIDAMSIDRequestId: FLEXTRCY_MSID-PAIR-ALLOC-CREATE_20250331151154
+                  msidAmsidRequestID: FLEXTRCY_MSID-PAIR-ALLOC-CREATE_20250331151154
                   errors:
                     - row: "1"
                       data: The MSID Pair Effective From Date must be at least 1 Working Day in the
                         future.
+        "202":
+          description: Partial success with errors
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - $ref: "#/components/schemas/Partial202MsidInsert"
+                  - $ref: "#/components/schemas/Partial202AMsidInsert" 
         "400":
           description: Bad Request - Invalid parameters or limits reached
           content:
@@ -265,7 +273,7 @@ paths:
                 type: object
                 example:
                   status: Accepted
-                  MSIDAMSIDRequestId: FLEXTRCY_MSID-PAIR-ALLOC-UPDATE_20250331151154
+                  msidAmsidRequestID: FLEXTRCY_MSID-PAIR-ALLOC-UPDATE_20250331151154
         "202":
           description: Partial success with errors
           content:
@@ -274,7 +282,7 @@ paths:
                 type: object
                 example:
                   status: Accepted_with_errors
-                  MSIDAMSIDRequestId: FLEXTRCY_MSID-PAIR-ALLOC-UPDATE_20250331151154
+                  msidAmsidRequestID: FLEXTRCY_MSID-PAIR-ALLOC-UPDATE_20250331151154
                   errors:
                     - row: "1"
                       data: MSID Pair must be in Pending Status 'S'
@@ -473,6 +481,59 @@ components:
         errors:
         - row: "1"
           data: "MSID Pair must be in Pending Status 'S'."
+    Partial202MsidInsert:
+      type: object
+      properties:
+        status:
+          type: string
+        requestId:
+          type: string
+        errors:
+          type: array
+          items:
+            type: object
+            properties:
+              row:
+                type: string
+              data:
+                type: string
+              assetRegistrationId:
+                type: string
+      example:
+        status: Accepted_with_errors
+        requestId: FLEXTRCY_MSID-PAIR-ALLOC-CREATE_20260221150528
+        errors:
+        - row: "1"
+          data: "The MSID Pair GSP Group must be in the same GSP Group of the associated BM Unit."
+          assetRegistrationId: "ASSET001"
+    Partial202AMsidInsert:
+      type: object
+      properties:
+        status:
+          type: string
+        requestId:
+          type: string
+        message:
+          type: string
+        errors:
+          type: array
+          items:
+            type: object
+            properties:
+              row:
+                type: string
+              data:
+                type: string
+              assetRegistrationId:
+                type: string
+      example:
+        status: Payload_Failed
+        requestid: FLEXTRCY_AMSID-PAIR-ALLOC-CREATE_20260225150528
+        message: Error count greater than zero but less than error limit (500). Between 1 and 500 record-level errors detected.
+        errors:
+        - row: "1"
+          data: "Invalid Effective From Date: The Effective From Date must be > 5 Working Days from today’s date"
+          assetRegistrationId: "ASSET001"
     AuthorizationError:
       type: object
       properties:
@@ -512,7 +573,7 @@ components:
           type: string
           maxLength: 255
           example: 68zUNyKoprbKt7ymLN6E/Q==
-        MsidAmsidRequestID:
+        msidAmsidRequestID:
           type: string
           maxLength: 100
           example: ALEXTRCI_MSID-PAIR-ALLOC-CREATE_20250804155244
@@ -619,7 +680,7 @@ components:
         - partyID
         - username
         - partyAPIKey
-        - MsidAmsidRequestID
+        - msidAmsidRequestID
       properties:
         partyID:
           type: string
@@ -632,7 +693,7 @@ components:
           type: string
           maxLength: 255
           example: 68zUNyKoprbKt7ymLN6E/Q==
-        MsidAmsidRequestID:
+        msidAmsidRequestID:
           type: string
           maxLength: 100
           example: ALEXTRCI_AMSID-PAIR-ALLOC-CREATE_20250804155244
@@ -642,7 +703,7 @@ components:
         - partyID
         - username
         - partyAPIKey
-        - MsidAmsidRequestID
+        - msidAmsidRequestID
       properties:
         partyID:
           type: string
