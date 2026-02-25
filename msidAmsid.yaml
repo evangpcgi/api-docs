@@ -184,7 +184,7 @@ paths:
                 - $ref: "#/components/schemas/InsertAmsidsRequest"
       responses:
         "200":
-          description: MSIDs processed successfully and accepted
+          description: MSIDs/AMSIDS processed successfully and accepted
           content:
             application/json:
               schema:
@@ -192,19 +192,6 @@ paths:
                 example:
                   status: Accepted
                   requestId: FLEXTRCY_MSID-PAIR-ALLOC-CREATE_20250331151154
-        "999":
-          description: Partial success with errors
-          content:
-            application/json:
-              schema:
-                type: object
-                example:
-                  status: Accepted_with_errors
-                  msidAmsidRequestID: FLEXTRCY_MSID-PAIR-ALLOC-CREATE_20250331151154
-                  errors:
-                    - row: "1"
-                      data: The MSID Pair Effective From Date must be at least 1 Working Day in the
-                        future.
         "202":
           description: Partial success with errors
           content:
