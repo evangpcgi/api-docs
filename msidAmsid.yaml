@@ -483,16 +483,13 @@ components:
               row:
                 type: string
               data:
-                type: string
-              assetRegistrationId:
-                type: string
+                type: string              
       example:
         status: Accepted_with_errors
         requestId: FLEXTRCY_MSID-PAIR-ALLOC-CREATE_20260221150528
         errors:
         - row: "1"
-          data: "The MSID Pair GSP Group must be in the same GSP Group of the associated BM Unit."
-          assetRegistrationId: "ASSET001"
+          data: "The MSID Pair GSP Group must be in the same GSP Group of the associated BM Unit."          
     Partial202AMsidInsert:
       type: object
       properties:
