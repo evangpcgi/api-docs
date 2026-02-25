@@ -284,12 +284,12 @@ paths:
             application/json:
               schema:
                 oneOf:
-                  - $ref: "#/components/schemas/UpdateSchemaValidation"
-                  - $ref: "#/components/schemas/UpdateETDBusinessValidation"
-                  - $ref: "#/components/schemas/UpdateConsentFlagBusinessValidation"
                   - $ref: "#/components/schemas/InvalidParameters"
                   - $ref: "#/components/schemas/LimitErrorReached"
                   - $ref: "#/components/schemas/PayloadLimit"
+                  - $ref: "#/components/schemas/UpdateSchemaValidation"
+                  - $ref: "#/components/schemas/UpdateETDBusinessValidation"
+                  - $ref: "#/components/schemas/UpdateConsentFlagBusinessValidation"
         "401":
           $ref: "#/components/responses/SessionExpiredError"
         "403":
@@ -734,9 +734,9 @@ components:
                 description: Asset Registration Id,AMVLP MPID,AMVLP Role,Address Line 1,Address Line 2,Address Line 3,Address Line 4,Address Line 5,Address Line 6,Postcode,GSP Group Id,BM Unit Id,Export AMSID required indicator,Asset type,Asset Voltage,Measurement Transformer Indicator,Asset Capacity,AMSID Pair EFD,AMSID Pair ETD,Measurement Class,Import MSID,Export MSID
             example:
               - row: "1"
-                data: NFL0100001,FLEX,TS,ADRESS 1,ADRESS 2,ADRESS 3,ADRESS 4,ADRESS 5,ADRESS 6,KY1 3NW,_M,po,T,Battery Storage,1252,T,123,02/10/2026,31/12/2026,C,2376500474019,1801859241286
+                data: NFL0100001,FLEX,AV,ADRESS 1,ADRESS 2,ADRESS 3,ADRESS 4,ADRESS 5,ADRESS 6,KY1 3NW,_M,po,T,Battery Storage,1252,T,123,02/10/2026,31/12/2026,C,2376500474019,1801859241286
               - row: "2"
-                data: NFL0100001,FLEX,TS,ADRESS 1,ADRESS 2,ADRESS 3,ADRESS 4,ADRESS 5,ADRESS 6,KY1 3NW,_M,po,F,Battery Storage,1252,F,123,02/10/2026,31/12/2026,C,2376500474019,    
+                data: NFL0100001,FLEX,AV,ADRESS 1,ADRESS 2,ADRESS 3,ADRESS 4,ADRESS 5,ADRESS 6,KY1 3NW,_M,po,F,Battery Storage,1252,F,123,02/10/2026,31/12/2026,C,2376500474019,    
     UpdateMSIDETD:
       title: Update MSID ETD
       type: object
