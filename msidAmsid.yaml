@@ -61,7 +61,7 @@ paths:
                       example: V__AFLEX001
                     Pending_Flag:
                       type: string
-                      example: S
+                      example: R
                     MSID_Pair_ID:
                       type: string
                       example: a0sAe000001xJvhIAE
@@ -72,6 +72,9 @@ paths:
                     Import_Metering_System:
                       type: string
                       example: "1083772918844"
+                    Export_Metering_System:
+                      type: string
+                      example: "1083754918831"
                     GSP_Group:
                       type: string
                       example: _P
@@ -85,10 +88,13 @@ paths:
                       example: "2025-04-29"
                     Import_Reject_Reasons:
                       type: string
-                      example: "Duplicate MSID"
+                      example: "Supplier Role does not exist"
                     Export_Reject_Reasons:
                       type: string
-                      example: "Duplicate MSID"
+                      example: ""
+                    MSID_Request_ID:
+                      type: string
+                      example: "PARTYID_MSID-PAIR-ALLOC-CREATE_20251001171512"                    
         "204":
           description: No content - No MSIDS returned for search criteria          
         "400":
