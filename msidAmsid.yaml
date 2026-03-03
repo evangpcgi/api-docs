@@ -50,18 +50,39 @@ paths:
         "200":
           description: List of MSIDs matching filters
           content:
-            application/json:
-              schema:
-                type: object
-                example:
-                  SVA_BM_Unit: V__AFLEX001
-                  Pending_Flag: S
-                  MSID_Pair_ID: a0sAe000001xJvhIAE
-                  Last_Modified_Date: 2025-07-02 14:39:47
-                  Import_Metering_System: "4883772918844"
-                  GSP_Group: _P
-                  Effective_To_Settlement_Date: 02/07/2025
-                  Effective_From_Settlement_Date: 29/04/2025
+      application/json:
+        schema:
+          type: array
+          items:
+            type: object
+            properties:
+              SVA_BM_Unit:
+                type: string
+                example: V__AFLEX001
+              Pending_Flag:
+                type: string
+                example: S
+              MSID_Pair_ID:
+                type: string
+                example: a0sAe000001xJvhIAE
+              Last_Modified_Date:
+                type: string
+                format: date
+                example: "2025-07-02"
+              Import_Metering_System:
+                type: string
+                example: "1083772918844"
+              GSP_Group:
+                type: string
+                example: _P
+              Effective_To_Settlement_Date:
+                type: string
+                format: date
+                example: "2025-07-02"
+              Effective_From_Settlement_Date:
+                type: string
+                format: date
+                example: "2025-04-29"
         "400":
           description: Bad Request - Invalid parameters or limits reached
           content:
@@ -105,30 +126,74 @@ paths:
         "200":
           description: List of AMSIDs matching filters
           content:
-            application/json:
-              schema:
-                type: object
-                example:
-                  SVA_BM_Unit: V__HAXLE001
-                  Registration_Stage: 1
-                  Post_Code: KY13NW
-                  Pending_Flag: P
-                  MSIDAMSID_Request_ID: AXLEENER_AMSID-PAIR-ALLOC-CREATE_20260224171003
-                  Measurement_Transformer_Indicator: F
-                  Import_MSID: 2000022017780
-                  Import_AMSID: 7700000015335
-                  GSP_Group_Id: _H
-                  Asset_Voltage: 1252
-                  Asset_Type: BatteryStorage
-                  Asset_Registration_ID: NFL0100
-                  Asset_Capacity: 123
-                  AMVLP: AXLEENER
-                  AMSID_Pair_ETD: 2026-12-31
-                  AMSID_Pair_EFD: 2026-12-02
-                  Address_Line_4: KIRKCALDY
-                  Address_Line_3: HEATHERYWOOD ROAD
-                  Address_Line_2: LAND EAST OF REDHOUSE ELECTRICITY
-                  Address_Line_1: SOUTH REDHOUSE ESS
+      application/json:
+        schema:
+          type: array
+          items:
+            type: object
+            properties:
+              SVA_BM_Unit:
+                type: string
+                example: V__HAXLE001
+              Registration_Stage:
+                type: string
+                example: "1"
+              Post_Code:
+                type: string
+                example: KY13NW
+              Pending_Flag:
+                type: string
+                example: P
+              MSIDAMSID_Request_ID:
+                type: string
+                example: AXLEENER_AMSID-PAIR-ALLOC-CREATE_20260303122413
+              Measurement_Transformer_Indicator:
+                type: string
+                example: F
+              Import_MSID:
+                type: string
+                example: "2000022017780"
+              Import_AMSID:
+                type: string
+                example: "7700000015338"
+              GSP_Group_Id:
+                type: string
+                example: _H
+              Asset_Voltage:
+                type: string
+                example: "1252"
+              Asset_Type:
+                type: string
+                example: BatteryStorage
+              Asset_Registration_ID:
+                type: string
+                example: NFL0100
+              Asset_Capacity:
+                type: string
+                example: "123"
+              AMVLP:
+                type: string
+                example: AXLEENER
+              AMSID_Pair_ETD:
+                type: string
+                format: date
+                example: "2026-12-31"
+              AMSID_Pair_EFD:
+                type: string
+                format: date
+                example: "2026-12-10"
+              Address_Line_4:
+                type: string
+                example: KIRKCALDY
+              Address_Line_3:
+                type: string
+                example: HEATHERYWOOD ROAD
+              Address_Line_2:
+                type: string
+                example: LAND EAST OF REDHOUSE ELECTRICITY
+              Address_Line_1:
+                type: string
+                example: SOUTH REDHOUSE ESS
         "400":
           description: Bad Request - Invalid parameters or limits reached
           content:
