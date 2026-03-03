@@ -83,6 +83,23 @@ paths:
                       type: string
                       format: date
                       example: "2025-04-29"
+                    Import_Reject_Reasons:
+                      type: string
+                      example: "Duplicate MSID"
+                    Export_Reject_Reasons:
+                      type: string
+                      example: "Duplicate MSID"
+        "204":
+          description: No content - No MSIDS returned for search criteria
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                example:
+                  message: ""
         "400":
           description: Bad Request - Invalid parameters or limits reached
           content:
@@ -182,6 +199,12 @@ paths:
                       type: string
                       format: date
                       example: "2026-12-10"
+                    Address_Line_6:
+                      type: string
+                      example: KIRLDY
+                    Address_Line_5:
+                      type: string
+                      example: KLDY
                     Address_Line_4:
                       type: string
                       example: KIRKCALDY
@@ -194,6 +217,17 @@ paths:
                     Address_Line_1:
                       type: string
                       example: SOUTH REDHOUSE ESS
+        "204":
+          description: No content - No AMSIDS returned for search criteria
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                example:
+                  message: ""
         "400":
           description: Bad Request - Invalid parameters or limits reached
           content:
