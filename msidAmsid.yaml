@@ -124,7 +124,7 @@ paths:
 
         3. partyAPIKey * (Key as received in email after requesting party key)
 
-        4. msidAmsidRequestID (Batch request ID from a previous Insert or Update operation)
+        4. msidAmsidRequestID * (Batch request ID from a previous Insert or Update operation)
 
         5. pendingFlag ** (Filter by status code D, P, S, R)        
                   
@@ -238,8 +238,7 @@ paths:
         "401":
           $ref: "#/components/responses/SessionExpiredError"
         "403":
-          $ref: "#/components/responses/AuthorizationError"
-  
+          $ref: "#/components/responses/AuthorizationError"  
   /Insert:
     post:
       summary: /Insert Endpoint
@@ -697,17 +696,17 @@ components:
         partyID:
           type: string
           example: ALEXTRCI
-          mPARTngth: 8
+          maxLength: 8
         userName:
           type: email
           example: email.api@yaml.com
         partyAPIKey:
           type: string
-          mPARTngth: 255
+          maxLength: 255
           example: 68zUNyKoprbKt7ymLN6E/Q==
         msidAmsidRequestID:
           type: string
-          mPARTngth: 100
+          maxLength: 100
           example: ALEXTRCI_MSID-PAIR-ALLOC-CREATE_20250804155244
     MSIDReadCase2:
       type: object
@@ -719,13 +718,13 @@ components:
         partyID:
           type: string
           example: ALEXTRCI
-          mPARTngth: 8
+          maxLength: 8
         userName:
           type: email
           example: email.api@yaml.com
         partyAPIKey:
           type: string
-          mPARTngth: 255
+          maxLength: 255
           example: 68zUNyKoprbKt7ymLN6E/Q==
         pendingFlag:
           type: string
@@ -745,17 +744,17 @@ components:
         partyID:
           type: string
           example: ALEXTRCI
-          mPARTngth: 8
+          maxLength: 8
         userName:
           type: email
           example: email.api@yaml.com
         partyAPIKey:
           type: string
-          mPARTngth: 255
+          maxLength: 255
           example: 68zUNyKoprbKt7ymLN6E/Q==
         SVABMUnit:
           type: string
-          mPARTngth: 11
+          maxLength: 11
           example: V__APART002
         effectiveFromDate:
           type: string
@@ -778,13 +777,13 @@ components:
         partyID:
           type: string
           example: ALEXTRCI
-          mPARTngth: 8
+          maxLength: 8
         userName:
           type: email
           example: email.api@yaml.com
         partyAPIKey:
           type: string
-          mPARTngth: 255
+          maxLength: 255
           example: 68zUNyKoprbKt7ymLN6E/Q==
         pendingFlag:
           type: string
@@ -796,7 +795,7 @@ components:
           example: S
         SVABMUnit:
           type: string
-          mPARTngth: 11
+          maxLength: 11
           example: V__APART002
         effectiveFromDate:
           type: string
@@ -817,17 +816,17 @@ components:
         partyID:
           type: string
           example: ALEXTRCI
-          mPARTngth: 8
+          maxLength: 8
         userName:
           type: email
           example: email.api@yaml.com
         partyAPIKey:
           type: string
-          mPARTngth: 255
+          maxLength: 255
           example: 68zUNyKoprbKt7ymLN6E/Q==
         msidAmsidRequestID:
           type: string
-          mPARTngth: 100
+          maxLength: 100
           example: ALEXTRCI_AMSID-PAIR-ALLOC-CREATE_20250804155244
     AmsidReadCase2:
       type: object
@@ -840,17 +839,17 @@ components:
         partyID:
           type: string
           example: ALEXTRCI
-          mPARTngth: 8
+          maxLength: 8
         userName:
           type: email
           example: email.api@yaml.com
         partyAPIKey:
           type: string
-          mPARTngth: 255
+          maxLength: 255
           example: 68zUNyKoprbKt7ymLN6E/Q==
-        MsidAmsidRequestID:
+        msidAmsidRequestID:
           type: string
-          mPARTngth: 100
+          maxLength: 100
           example: ALEXTRCI_AMSID-PAIR-ALLOC-CREATE_20250804155244
         pendingFlag:
           type: string
@@ -871,13 +870,13 @@ components:
         partyID:
           type: string
           example: ALEXTRCI
-          mPARTngth: 8
+          maxLength: 8
         userName:
           type: email
           example: email.api@yaml.com
         partyAPIKey:
           type: string
-          mPARTngth: 255
+          maxLength: 255
           example: 68zUNyKoprbKt7ymLN6E/Q==
         MsidsToInsert:
           type: array
@@ -906,13 +905,13 @@ components:
         partyID:
           type: string
           example: ALEXTRCI
-          mPARTngth: 8
+          maxLength: 8
         userName:
           type: email
           example: email.api@yaml.com
         partyAPIKey:
           type: string
-          mPARTngth: 255
+          maxLength: 255
           example: 68zUNyKoprbKt7ymLN6E/Q==
         AmsidsToInsert:
           type: array
@@ -942,13 +941,13 @@ components:
         partyID:
           type: string
           example: ALEXTRCI
-          mPARTngth: 8
+          maxLength: 8
         userName:
           type: email
           example: email.api@yaml.com
         partyAPIKey:
           type: string
-          mPARTngth: 255
+          maxLength: 255
           example: 68zUNyKoprbKt7ymLN6E/Q==
         MsidAmsidsToUpdate:
           type: array
@@ -977,14 +976,14 @@ components:
       properties:
         partyID:
           type: string
-          mPARTngth: 8
+          maxLength: 8
           example: ALEXTRCI
         userName:
           type: email
           example: email.api@yaml.com
         partyAPIKey:
           type: string
-          mPARTngth: 255
+          maxLength: 255
           example: 68zUNyKoprbKt7ymLN6E/Q==
         ConsentFlagsToUpdate:
           type: array
