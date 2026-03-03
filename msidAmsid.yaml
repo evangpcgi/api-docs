@@ -90,16 +90,7 @@ paths:
                       type: string
                       example: "Duplicate MSID"
         "204":
-          description: No content - No MSIDS returned for search criteria
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  message:
-                    type: string
-                example:
-                  message: ""
+          description: No content - No MSIDS returned for search criteria          
         "400":
           description: Bad Request - Invalid parameters or limits reached
           content:
@@ -218,16 +209,7 @@ paths:
                       type: string
                       example: SOUTH REDHOUSE ESS
         "204":
-          description: No content - No AMSIDS returned for search criteria
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  message:
-                    type: string
-                example:
-                  message: ""
+          description: No content - No AMSIDS returned for search criteria          
         "400":
           description: Bad Request - Invalid parameters or limits reached
           content:
