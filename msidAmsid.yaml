@@ -20,7 +20,7 @@ paths:
 
         1. partyID * (Party ID as shown in Account Info)
 
-        2. username * (Email of authorized signatory/contact)
+        2. userName * (Email of authorized signatory/contact)
 
         3. partyAPIKey * (Key as received in email after requesting party key)
 
@@ -88,7 +88,7 @@ paths:
 
         1. partyID * (Party ID as shown in Account Info)
 
-        2. username * (Email of authorized signatory/contact)
+        2. userName * (Email of authorized signatory/contact)
 
         3. partyAPIKey * (Key as received in email after requesting party key)
 
@@ -151,24 +151,24 @@ paths:
     post:
       summary: /Insert Endpoint
       description: >
-        Comma Separated Values JSON with MSID data fields in order (*)mandatory:
+        Comma Separated Values JSON with MSID Data fields in order (*)mandatory:
 
 
         1. partyID * (Party ID as shown in Account Info)
 
-        2. username * (Email of authorized signatory/contact)
+        2. userName * (Email of authorized signatory/contact)
 
         3. partyAPIKey * (Key as received in email after requesting party key)
 
         4. MsidsToInsert * (Comma separated values (12))
 
 
-        Comma Separated Values JSON with AMSID data fields in order (*)mandatory:
+        Comma Separated Values JSON with AMSID Data fields in order (*)mandatory:
 
 
         1. partyID * (Party ID as shown in Account Info)
 
-        2. username * (Email of authorized signatory/contact)
+        2. userName * (Email of authorized signatory/contact)
 
         3. partyAPIKey * (Key as received in email after requesting party key)
 
@@ -221,7 +221,7 @@ paths:
     post:
       summary: /Update Endpoint
       description: >
-        Comma Separated Values string with MSID data fields in order
+        Comma Separated Values string with MSID Data fields in order
         (*)mandatory:
 
 
@@ -271,8 +271,8 @@ paths:
                   status: Accepted_with_errors
                   msidAmsidRequestID: FLEXTRCY_MSID-PAIR-ALLOC-UPDATE_20250331151154
                   errors:
-                    - row: "1"
-                      data: MSID Pair must be in Pending Status 'S'
+                    - Row: "1"
+                      Data: MSID Pair must be in Pending Status 'S'
         "400":
           description: Bad Request - Invalid parameters or limits reached
           content:
@@ -308,7 +308,7 @@ components:
         message:
           type: string
       example:
-        message: "Wrong Payload: Maximum number of row errors reached
+        message: "Wrong Payload: Maximum number of Row errors reached
           (stored_parameter_number 500)"
     PayloadLimit:
       type: object
@@ -336,15 +336,15 @@ components:
           items:
             type: object
             properties:
-              row:
+              Row:
                 type: string
-              data:
+              Data:
                 type: string
       example:
         status: Payload_Failed
         errors:
-        - row: "1"
-          data: "Incorrect field length: GSP Group."
+        - Row: "1"
+          Data: "Incorrect field length: GSP Group."
     InsertMSIDBusinessValidation:
       type: object
       properties:
@@ -355,15 +355,15 @@ components:
           items:
             type: object
             properties:
-              row:
+              Row:
                 type: string
-              data:
+              Data:
                 type: string
       example:
         status: Payload_Failed
         errors:
-        - row: "1"
-          data: "The MSID Pair GSP Group must be in the same GSP Group of the associated BM Unit."
+        - Row: "1"
+          Data: "The MSID Pair GSP Group must be in the same GSP Group of the associated BM Unit."
     InsertAMSIDSchemaValidation:
       type: object
       properties:
@@ -376,16 +376,16 @@ components:
           items:
             type: object
             properties:
-              row:
+              Row:
                 type: string
-              data:
+              Data:
                 type: string
       example:
         status: Payload_Failed
         message: Error count greater than zero but less than error limit (500). Between 1 and 500 record-level errors detected.
         errors:
-        - row: "1"
-          data: "Missing Value: Role Code (must be 2 characters)"
+        - Row: "1"
+          Data: "Missing Value: Role Code (must be 2 characters)"
     InsertAMSIDBusinessValidation:
       type: object
       properties:
@@ -398,9 +398,9 @@ components:
           items:
             type: object
             properties:
-              row:
+              Row:
                 type: string
-              data:
+              Data:
                 type: string
               assetRegistrationId:
                 type: string
@@ -408,8 +408,8 @@ components:
         status: Payload_Failed
         message: Error count greater than zero but less than error limit (500). Between 1 and 500 record-level errors detected.
         errors:
-        - row: "1"
-          data: "The MSID Pair GSP Group must be in the same GSP Group of the associated BM Unit."
+        - Row: "1"
+          Data: "The MSID Pair GSP Group must be in the same GSP Group of the associated BM Unit."
           assetRegistrationId: "ASSET001"
     UpdateSchemaValidation:
       type: object
@@ -421,15 +421,15 @@ components:
           items:
             type: object
             properties:
-              row:
+              Row:
                 type: string
-              data:
+              Data:
                 type: string
       example:
         status: Payload_Failed
         errors:
-        - row: "1"
-          data: "Incorrect field length: MSID Pair ID."
+        - Row: "1"
+          Data: "Incorrect field length: MSID Pair ID."
     UpdateETDBusinessValidation:
       type: object
       properties:
@@ -440,15 +440,15 @@ components:
           items:
             type: object
             properties:
-              row:
+              Row:
                 type: string
-              data:
+              Data:
                 type: string
       example:
         status: Payload_Failed
         errors:
-        - row: "1"
-          data: "MSID Pair records cannot be changed to a later Effective To Date."
+        - Row: "1"
+          Data: "MSID Pair records cannot be changed to a later Effective To Date."
     UpdateConsentFlagBusinessValidation:
       type: object
       properties:
@@ -459,15 +459,15 @@ components:
           items:
             type: object
             properties:
-              row:
+              Row:
                 type: string
-              data:
+              Data:
                 type: string
       example:
         status: Payload_Failed
         errors:
-        - row: "1"
-          data: "MSID Pair must be in Pending Status 'S'."
+        - Row: "1"
+          Data: "MSID Pair must be in Pending Status 'S'."
     Partial202MsidInsert:
       type: object
       properties:
@@ -480,16 +480,16 @@ components:
           items:
             type: object
             properties:
-              row:
+              Row:
                 type: string
-              data:
+              Data:
                 type: string              
       example:
         status: Accepted_with_errors
         requestId: FLEXTRCY_MSID-PAIR-ALLOC-CREATE_20260221150528
         errors:
-        - row: "1"
-          data: "The MSID Pair GSP Group must be in the same GSP Group of the associated BM Unit."          
+        - Row: "1"
+          Data: "The MSID Pair GSP Group must be in the same GSP Group of the associated BM Unit."          
     Partial202AMsidInsert:
       type: object
       properties:
@@ -504,9 +504,9 @@ components:
           items:
             type: object
             properties:
-              row:
+              Row:
                 type: string
-              data:
+              Data:
                 type: string
               assetRegistrationId:
                 type: string
@@ -515,8 +515,8 @@ components:
         requestid: FLEXTRCY_AMSID-PAIR-ALLOC-CREATE_20260225150528
         message: Error count greater than zero but less than error limit (500). Between 1 and 500 record-level errors detected.
         errors:
-        - row: "1"
-          data: "Invalid Effective From Date: The Effective From Date must be > 5 Working Days from today’s date"
+        - Row: "1"
+          Data: "Invalid Effective From Date: The Effective From Date must be > 5 Working Days from today’s date"
           assetRegistrationId: "ASSET001"
     AuthorizationError:
       type: object
@@ -524,7 +524,7 @@ components:
         message:
           type: string
       example:
-        message: The provided username and partyID combination is not authorized.
+        message: The provided userName and partyID combination is not authorized.
     SessionExpiredError:
       type: object
       properties:
@@ -543,14 +543,14 @@ components:
       type: object
       required:
         - partyID
-        - username
+        - userName
         - partyAPIKey
       properties:
         partyID:
           type: string
           example: ALEXTRCI
           maxLength: 8
-        username:
+        userName:
           type: email
           example: email.api@yaml.com
         partyAPIKey:
@@ -565,14 +565,14 @@ components:
       type: object
       required:
         - partyID
-        - username
+        - userName
         - partyAPIKey
       properties:
         partyID:
           type: string
           example: ALEXTRCI
           maxLength: 8
-        username:
+        userName:
           type: email
           example: email.api@yaml.com
         partyAPIKey:
@@ -588,7 +588,7 @@ components:
       type: object
       required:
         - partyID
-        - username
+        - userName
         - partyAPIKey
         - SVABMUnit
         - effectiveFromDate
@@ -598,7 +598,7 @@ components:
           type: string
           example: ALEXTRCI
           maxLength: 8
-        username:
+        userName:
           type: email
           example: email.api@yaml.com
         partyAPIKey:
@@ -621,7 +621,7 @@ components:
       type: object
       required:
         - partyID
-        - username
+        - userName
         - partyAPIKey
         - SVABMUnit
         - effectiveFromDate
@@ -631,7 +631,7 @@ components:
           type: string
           example: ALEXTRCI
           maxLength: 8
-        username:
+        userName:
           type: email
           example: email.api@yaml.com
         partyAPIKey:
@@ -662,7 +662,7 @@ components:
       type: object
       required:
         - partyID
-        - username
+        - userName
         - partyAPIKey
         - msidAmsidRequestID
       properties:
@@ -670,7 +670,7 @@ components:
           type: string
           example: ALEXTRCI
           maxLength: 8
-        username:
+        userName:
           type: email
           example: email.api@yaml.com
         partyAPIKey:
@@ -685,7 +685,7 @@ components:
       type: object
       required:
         - partyID
-        - username
+        - userName
         - partyAPIKey
         - msidAmsidRequestID
       properties:
@@ -693,7 +693,7 @@ components:
           type: string
           example: ALEXTRCI
           maxLength: 8
-        username:
+        userName:
           type: email
           example: email.api@yaml.com
         partyAPIKey:
@@ -716,7 +716,7 @@ components:
       type: object
       required:
         - partyID
-        - username
+        - userName
         - partyAPIKey
         - MsidsToInsert
       properties:
@@ -724,7 +724,7 @@ components:
           type: string
           example: ALEXTRCI
           maxLength: 8
-        username:
+        userName:
           type: email
           example: email.api@yaml.com
         partyAPIKey:
@@ -736,22 +736,22 @@ components:
           items:
             type: object
             properties:
-              row:
+              Row:
                 type: string
                 description: Row index
-              data:
+              Data:
                 type: string
                 description: BMUnitID,GSPGroup,MSIDP,MSIDP,ImportMSID,ImportConsentFlag,ICEFD,ICETD,ExportMSID,ExportConsentFlag,ECEFD,ECETD
             example:
-              - row: "1"
-                data: V__AFLEX002,_A,02/09/2025,20/10/2025,1800061146877,Y,02/09/2025,20/10/2025,1800061146886,Y,02/09/2025,20/10/2025
-              - row: "2"
-                data: V__AFLEX002,_A,02/09/2025,20/10/2025,1800061146877,Y,02/09/2025,20/10/2025,,,,
+              - Row: "1"
+                Data: V__AFLEX002,_A,02/09/2025,20/10/2025,1800061146877,Y,02/09/2025,20/10/2025,1800061146886,Y,02/09/2025,20/10/2025
+              - Row: "2"
+                Data: V__AFLEX002,_A,02/09/2025,20/10/2025,1800061146877,Y,02/09/2025,20/10/2025,,,,
     InsertAmsidsRequest:
       type: object
       required:
         - partyID
-        - username
+        - userName
         - partyAPIKey
         - AmsidsToInsert
       properties:
@@ -759,7 +759,7 @@ components:
           type: string
           example: ALEXTRCI
           maxLength: 8
-        username:
+        userName:
           type: email
           example: email.api@yaml.com
         partyAPIKey:
@@ -771,23 +771,23 @@ components:
           items:
             type: object
             properties:
-              row:
+              Row:
                 type: string
                 description: Row index
-              data:
+              Data:
                 type: string
                 description: Asset Registration Id,AMVLP MPID,AMVLP Role,Address Line 1,Address Line 2,Address Line 3,Address Line 4,Address Line 5,Address Line 6,Postcode,GSP Group Id,BM Unit Id,Export AMSID required indicator,Asset type,Asset Voltage,Measurement Transformer Indicator,Asset Capacity,AMSID Pair EFD,AMSID Pair ETD,Measurement Class,Import MSID,Export MSID
             example:
-              - row: "1"
-                data: NFL0100001,FLEX,AV,ADRESS 1,ADRESS 2,ADRESS 3,ADRESS 4,ADRESS 5,ADRESS 6,KY1 3NW,_M,po,T,Battery Storage,1252,T,123,02/10/2026,31/12/2026,C,2376500474019,1801859241286
-              - row: "2"
-                data: NFL0100001,FLEX,AV,ADRESS 1,ADRESS 2,ADRESS 3,ADRESS 4,ADRESS 5,ADRESS 6,KY1 3NW,_M,po,F,Battery Storage,1252,F,123,02/10/2026,31/12/2026,C,2376500474019,    
+              - Row: "1"
+                Data: NFL0100001,FLEX,AV,ADRESS 1,ADRESS 2,ADRESS 3,ADRESS 4,ADRESS 5,ADRESS 6,KY1 3NW,_M,po,T,Battery Storage,1252,T,123,02/10/2026,31/12/2026,C,2376500474019,1801859241286
+              - Row: "2"
+                Data: NFL0100001,FLEX,AV,ADRESS 1,ADRESS 2,ADRESS 3,ADRESS 4,ADRESS 5,ADRESS 6,KY1 3NW,_M,po,F,Battery Storage,1252,F,123,02/10/2026,31/12/2026,C,2376500474019,    
     UpdateMSIDETD:
       title: Update MSID ETD
       type: object
       required:
         - partyID
-        - username
+        - userName
         - partyAPIKey
         - MsidAmsidsToUpdate
       properties:
@@ -795,7 +795,7 @@ components:
           type: string
           example: ALEXTRCI
           maxLength: 8
-        username:
+        userName:
           type: email
           example: email.api@yaml.com
         partyAPIKey:
@@ -807,23 +807,23 @@ components:
           items:
             type: object
             properties:
-              row:
+              Row:
                 type: string
                 description: Row index
-              data:
+              Data:
                 type: string
                 description: MSIDId,EffectiveToSettlementDate
             example:
-              - row: "1"
-                data: a0sAe000002GIr3HAG,10/10/2025
-              - row: "2"
-                data: a0sAe000002GIr3IAG,11/10/2025
+              - Row: "1"
+                Data: a0sAe000002GIr3HAG,10/10/2025
+              - Row: "2"
+                Data: a0sAe000002GIr3IAG,11/10/2025
     UpdateConsentFlag:
       title: Update MSID Consent Flag
       type: object
       required:
         - partyID
-        - username
+        - userName
         - partyAPIKey
         - ConsentFlagsToUpdate
       properties:
@@ -831,7 +831,7 @@ components:
           type: string
           maxLength: 8
           example: ALEXTRCI
-        username:
+        userName:
           type: email
           example: email.api@yaml.com
         partyAPIKey:
@@ -843,20 +843,20 @@ components:
           items:
             type: object
             properties:
-              row:
+              Row:
                 type: string
                 description: Row index
-              data:
+              Data:
                 type: string
                 description: MSIDId,MPAN,ConsentFlag,ConsentEffectiveFromDate,FlowDirection
             example:
-              - row: "1"
-                data: a0sAe000002GIr3HAG,1900071112273,N,10/10/2025,Import
-              - row: "2"
-                data: a0sAe000002GIr3HAG,1900071112273,N,10/10/2025,Export
+              - Row: "1"
+                Data: a0sAe000002GIr3HAG,1900071112273,N,10/10/2025,Import
+              - Row: "2"
+                Data: a0sAe000002GIr3HAG,1900071112273,N,10/10/2025,Export
   responses:
     AuthorizationError:
-      description: Authorization failure (invalid API key or unauthorized username)
+      description: Authorization failure (invalid API key or unauthorized userName)
       content:
         application/json:
           schema:
