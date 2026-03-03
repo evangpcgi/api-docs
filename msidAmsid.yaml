@@ -4,7 +4,7 @@ info:
   title: MSID/AMSID Management API
   description: API for reading (MSIDs/AMSIDs), inserting (MSIDs/AMSIDs) and
     updating MSID Pair records and their allocation to SBMUs.
-  version: 1.0.1
+  version: 2.0.0
 servers:
   - url: https://elexon.my.salesforce.com/services/apexrest/MsidAmsidPairs
     description: Production API
