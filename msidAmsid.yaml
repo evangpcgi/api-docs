@@ -56,45 +56,45 @@ paths:
                 items:
                   type: object
                   properties:
-                    SVA_BM_Unit:
+                    MSID_Request_ID:
                       type: string
-                      example: V__AFLEX001
-                    Pending_Flag:
-                      type: string
-                      example: R
+                      example: "PARTYID_MSID-PAIR-ALLOC-CREATE_20251001171512"
                     MSID_Pair_ID:
                       type: string
                       example: a0sAe000001xJvhIAE
-                    Last_Modified_Date:
+                    Pending_Flag:
+                      type: string
+                      example: R
+                    GSP_Group:
+                      type: string
+                      example: _P
+                    SVA_BM_Unit:
+                      type: string
+                      example: V__AFLEX001
+                    Effective_From_Settlement_Date:
+                      type: string
+                      format: date
+                      example: "2025-04-29"
+                    Effective_To_Settlement_Date:
                       type: string
                       format: date
                       example: "2025-07-02"
                     Import_Metering_System:
                       type: string
                       example: "1083772918844"
-                    Export_Metering_System:
-                      type: string
-                      example: "1083754918831"
-                    GSP_Group:
-                      type: string
-                      example: _P
-                    Effective_To_Settlement_Date:
-                      type: string
-                      format: date
-                      example: "2025-07-02"
-                    Effective_From_Settlement_Date:
-                      type: string
-                      format: date
-                      example: "2025-04-29"
                     Import_Reject_Reasons:
                       type: string
                       example: "Supplier Role does not exist"
+                    Export_Metering_System:
+                      type: string
+                      example: "1083754918831"
                     Export_Reject_Reasons:
                       type: string
                       example: ""
-                    MSID_Request_ID:
+                    Last_Modified_Date:
                       type: string
-                      example: "PARTYID_MSID-PAIR-ALLOC-CREATE_20251001171512"                    
+                      format: date
+                      example: "2025-07-02"                    
         "204":
           description: No content - No MSIDS returned for search criteria          
         "400":
@@ -146,74 +146,83 @@ paths:
                 items:
                   type: object
                   properties:
-                    SVA_BM_Unit:
-                      type: string
-                      example: V__HAXLE001
-                    Registration_Stage:
-                      type: string
-                      example: "1"
-                    Post_Code:
-                      type: string
-                      example: KY13NW
-                    Pending_Flag:
-                      type: string
-                      example: P
                     MSIDAMSID_Request_ID:
                       type: string
                       example: AXLEENER_AMSID-PAIR-ALLOC-CREATE_20260303122413
-                    Measurement_Transformer_Indicator:
-                      type: string
-                      example: F
-                    Import_MSID:
-                      type: string
-                      example: "2000022017780"
-                    Import_AMSID:
-                      type: string
-                      example: "7700000015338"
-                    GSP_Group_Id:
-                      type: string
-                      example: _H
-                    Asset_Voltage:
-                      type: string
-                      example: "1252"
-                    Asset_Type:
-                      type: string
-                      example: BatteryStorage
                     Asset_Registration_ID:
                       type: string
                       example: NFL0100
-                    Asset_Capacity:
+                    Registration_Stage:
                       type: string
-                      example: "123"
-                    AMVLP:
+                      example: "1"
+                    Pending_Flag:
                       type: string
-                      example: AXLEENER
-                    AMSID_Pair_ETD:
+                      example: P
+                    SVA_BM_Unit:
                       type: string
-                      format: date
-                      example: "2026-12-31"
+                      example: V__HAXLE001
+                    GSP_Group_Id:
+                      type: string
+                      example: _H
                     AMSID_Pair_EFD:
                       type: string
                       format: date
                       example: "2026-12-10"
-                    Address_Line_6:
+                    AMSID_Pair_ETD:
                       type: string
-                      example: KIRLDY
-                    Address_Line_5:
+                      format: date
+                      example: "2026-12-31"
+                    AMVLP:
                       type: string
-                      example: KLDY
-                    Address_Line_4:
-                      type: string
-                      example: KIRKCALDY
-                    Address_Line_3:
-                      type: string
-                      example: HEATHERYWOOD ROAD
-                    Address_Line_2:
-                      type: string
-                      example: LAND EAST OF REDHOUSE ELECTRICITY
+                      example: AXLEENER
                     Address_Line_1:
                       type: string
                       example: SOUTH REDHOUSE ESS
+                    Address_Line_2:
+                      type: string
+                      example: LAND EAST OF REDHOUSE ELECTRICITY
+                    Address_Line_3:
+                      type: string
+                      example: HEATHERYWOOD ROAD
+                    Address_Line_4:
+                      type: string
+                      example: KIRKCALDY
+                    Address_Line_5:
+                      type: string
+                      example: KLDY
+                    Address_Line_6:
+                      type: string
+                      example: KIRLDY
+                    Postcode:
+                      type: string
+                      example: KY13NW
+                    Asset_Type:
+                      type: string
+                      example: BatteryStorage
+                    Asset_Voltage:
+                      type: string
+                      example: "1252"
+                    Measurement_Transformer_Indicator:
+                      type: string
+                      example: F
+                    Asset_Capacity:
+                      type: string
+                      example: "123"
+                    Import_AMSID:
+                      type: string
+                      example: "7700000015338"
+                    Export_AMSID:
+                      type: string
+                      example: "7700000015339"
+                    Import_MSID:
+                      type: string
+                      example: "2000022017780"
+                    Export_MSID:
+                      type: string
+                      example: "2000022017781"
+                    Rejection_Reason:
+                      type: string
+                      example: ""
         "204":
           description: No content - No AMSIDS returned for search criteria          
         "400":
