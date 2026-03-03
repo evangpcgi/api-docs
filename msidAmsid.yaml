@@ -70,7 +70,7 @@ paths:
                       example: _P
                     SVA_BM_Unit:
                       type: string
-                      example: V__AFLEX001
+                      example: V__APART001
                     Effective_From_Settlement_Date:
                       type: string
                       format: date
@@ -148,7 +148,7 @@ paths:
                   properties:
                     MSIDAMSID_Request_ID:
                       type: string
-                      example: AXLEENER_AMSID-PAIR-ALLOC-CREATE_20260303122413
+                      example: PARTENER_AMSID-PAIR-ALLOC-CREATE_20260303122413
                     Asset_Registration_ID:
                       type: string
                       example: NFL0100
@@ -160,7 +160,7 @@ paths:
                       example: P
                     SVA_BM_Unit:
                       type: string
-                      example: V__HAXLE001
+                      example: V__HPART001
                     GSP_Group_Id:
                       type: string
                       example: _H
@@ -174,7 +174,7 @@ paths:
                       example: "2026-12-31"
                     AMVLP:
                       type: string
-                      example: AXLEENER
+                      example: PARTENER
                     Address_Line_1:
                       type: string
                       example: SOUTH REDHOUSE ESS
@@ -277,14 +277,20 @@ paths:
                 - $ref: "#/components/schemas/InsertAmsidsRequest"
       responses:
         "200":
-          description: MSIDs/AMSIDS processed successfully and accepted
+          description: Batch Request Identifier for the MSIDs/AMSIDs atempted to be inserted in the system
           content:
             application/json:
               schema:
-                type: object
-                example:
-                  status: Accepted
-                  requestId: FLEXTRCY_MSID-PAIR-ALLOC-CREATE_20250331151154
+                type: array
+                items:
+                  type: object
+                  properties:
+                    status:
+                      type: string
+                      example: Accepted
+                    requestId:
+                      type: string
+                      example: PARTTRCY_MSID-PAIR-ALLOC-CREATE_20260303232635
         "202":
           description: Partial success with errors
           content:
@@ -320,22 +326,25 @@ paths:
 
         Effective to Settlement Date
 
-        1. MSIDPairID (Unique Kinnect Customer Solutions portal ID for the MSID Pair) *        
+        1. partyID * (Party ID as shown in Account Info)
 
-        2. Effective To Settlement Date {MSIDP} (DD/MM/YYYY) *
+        2. userName * (Email of authorized signatory/contact)
 
+        3. partyAPIKey * (Key as received in email after requesting party key)
 
+        4. MsidAmsidsToUpdate * (Comma separated values (2))
+        
+        
         Consent Information
 
-        1. MSIDPairID (Unique Kinnect Customer Solutions portal ID for the MSID Pair) *
+        1. partyID * (Party ID as shown in Account Info)
 
-        2. MSID (Import or Export MSID associated with the MSID Pair) *
+        2. userName * (Email of authorized signatory/contact)
 
-        3. CustomerConsentFlag (Consent status Y/N) *        
+        3. partyAPIKey * (Key as received in email after requesting party key)
 
-        4. ConsentEffectiveFromDate (Date from which consent is effective) *        
-
-        5. FlowDirection (Import/Export) * 
+        4. ConsentFlagsToUpdate * (Comma separated values (5))
+        
       requestBody:
         required: true
         content:
@@ -346,26 +355,28 @@ paths:
                 - $ref: "#/components/schemas/UpdateConsentFlag"
       responses:
         "200":
-          description: MSIDs updated successfully
+          description: Batch Request Identifier for the MSIDs atempted to be updated in the system (ETD/customer consent)
           content:
             application/json:
               schema:
-                type: object
-                example:
-                  status: Accepted
-                  msidAmsidRequestID: FLEXTRCY_MSID-PAIR-ALLOC-UPDATE_20250331151154
+                type: array
+                items:
+                  type: object
+                  properties:
+                    status:
+                      type: string
+                      example: Accepted
+                    requestId:
+                      type: string
+                      example: PARTTRCY_MSID-PAIR-ALLOC-UDPATE_20260303232635
         "202":
           description: Partial success with errors
           content:
             application/json:
               schema:
-                type: object
-                example:
-                  status: Accepted_with_errors
-                  msidAmsidRequestID: FLEXTRCY_MSID-PAIR-ALLOC-UPDATE_20250331151154
-                  errors:
-                    - Row: "1"
-                      Data: MSID Pair must be in Pending Status 'S'
+                oneOf:
+                  - $ref: "#/components/schemas/Partial202MsidETDUpdate"
+                  - $ref: "#/components/schemas/Partial202MsidConsentUpdate" 
         "400":
           description: Bad Request - Invalid parameters or limits reached
           content:
@@ -579,7 +590,7 @@ components:
                 type: string              
       example:
         status: Accepted_with_errors
-        requestId: FLEXTRCY_MSID-PAIR-ALLOC-CREATE_20260221150528
+        requestId: PARTTRCY_MSID-PAIR-ALLOC-CREATE_20260221150528
         errors:
         - Row: "1"
           Data: "The MSID Pair GSP Group must be in the same GSP Group of the associated BM Unit."          
@@ -605,12 +616,56 @@ components:
                 type: string
       example:
         status: Payload_Failed
-        requestid: FLEXTRCY_AMSID-PAIR-ALLOC-CREATE_20260225150528
+        requestid: PARTTRCY_AMSID-PAIR-ALLOC-CREATE_20260225150528
         message: Error count greater than zero but less than error limit (500). Between 1 and 500 record-level errors detected.
         errors:
         - Row: "1"
           Data: "Invalid Effective From Date: The Effective From Date must be > 5 Working Days from today’s date"
           assetRegistrationId: "ASSET001"
+    Partial202MsidETDUpdate:
+      type: object
+      properties:
+        status:
+          type: string
+        requestId:
+          type: string
+        errors:
+          type: array
+          items:
+            type: object
+            properties:
+              Row:
+                type: string
+              Data:
+                type: string              
+      example:
+        status: Accepted_with_errors
+        requestId: PARTTRCY_MSID-PAIR-ALLOC-UPDATE-MSID-ETD-API_20260303234601
+        errors:
+        - Row: "1"
+          Data: "a0sPv000003CmFAIA0 | MSID Pair record does not exist."
+    Partial202MsidConsentUpdate:
+      type: object
+      properties:
+        status:
+          type: string
+        requestId:
+          type: string
+        errors:
+          type: array
+          items:
+            type: object
+            properties:
+              Row:
+                type: string
+              Data:
+                type: string              
+      example:
+        status: Accepted_with_errors
+        requestId: PARTTRCY_MSID-PAIR-ALLOC-UPDATE-CONSENT-API_20260303234254
+        errors:
+        - Row: "1"
+          Data: "a0sPv0000039s3SIAQ | MSID does not match MSID Pair."
     AuthorizationError:
       type: object
       properties:
@@ -642,17 +697,17 @@ components:
         partyID:
           type: string
           example: ALEXTRCI
-          maxLength: 8
+          mPARTngth: 8
         userName:
           type: email
           example: email.api@yaml.com
         partyAPIKey:
           type: string
-          maxLength: 255
+          mPARTngth: 255
           example: 68zUNyKoprbKt7ymLN6E/Q==
         msidAmsidRequestID:
           type: string
-          maxLength: 100
+          mPARTngth: 100
           example: ALEXTRCI_MSID-PAIR-ALLOC-CREATE_20250804155244
     MSIDReadCase2:
       type: object
@@ -664,13 +719,13 @@ components:
         partyID:
           type: string
           example: ALEXTRCI
-          maxLength: 8
+          mPARTngth: 8
         userName:
           type: email
           example: email.api@yaml.com
         partyAPIKey:
           type: string
-          maxLength: 255
+          mPARTngth: 255
           example: 68zUNyKoprbKt7ymLN6E/Q==
         pendingFlag:
           type: string
@@ -690,18 +745,18 @@ components:
         partyID:
           type: string
           example: ALEXTRCI
-          maxLength: 8
+          mPARTngth: 8
         userName:
           type: email
           example: email.api@yaml.com
         partyAPIKey:
           type: string
-          maxLength: 255
+          mPARTngth: 255
           example: 68zUNyKoprbKt7ymLN6E/Q==
         SVABMUnit:
           type: string
-          maxLength: 11
-          example: V__AFLEX002
+          mPARTngth: 11
+          example: V__APART002
         effectiveFromDate:
           type: string
           pattern: ^\d{8}$
@@ -723,13 +778,13 @@ components:
         partyID:
           type: string
           example: ALEXTRCI
-          maxLength: 8
+          mPARTngth: 8
         userName:
           type: email
           example: email.api@yaml.com
         partyAPIKey:
           type: string
-          maxLength: 255
+          mPARTngth: 255
           example: 68zUNyKoprbKt7ymLN6E/Q==
         pendingFlag:
           type: string
@@ -741,8 +796,8 @@ components:
           example: S
         SVABMUnit:
           type: string
-          maxLength: 11
-          example: V__AFLEX002
+          mPARTngth: 11
+          example: V__APART002
         effectiveFromDate:
           type: string
           pattern: ^\d{8}$
@@ -762,17 +817,17 @@ components:
         partyID:
           type: string
           example: ALEXTRCI
-          maxLength: 8
+          mPARTngth: 8
         userName:
           type: email
           example: email.api@yaml.com
         partyAPIKey:
           type: string
-          maxLength: 255
+          mPARTngth: 255
           example: 68zUNyKoprbKt7ymLN6E/Q==
         msidAmsidRequestID:
           type: string
-          maxLength: 100
+          mPARTngth: 100
           example: ALEXTRCI_AMSID-PAIR-ALLOC-CREATE_20250804155244
     AmsidReadCase2:
       type: object
@@ -785,17 +840,17 @@ components:
         partyID:
           type: string
           example: ALEXTRCI
-          maxLength: 8
+          mPARTngth: 8
         userName:
           type: email
           example: email.api@yaml.com
         partyAPIKey:
           type: string
-          maxLength: 255
+          mPARTngth: 255
           example: 68zUNyKoprbKt7ymLN6E/Q==
         MsidAmsidRequestID:
           type: string
-          maxLength: 100
+          mPARTngth: 100
           example: ALEXTRCI_AMSID-PAIR-ALLOC-CREATE_20250804155244
         pendingFlag:
           type: string
@@ -816,13 +871,13 @@ components:
         partyID:
           type: string
           example: ALEXTRCI
-          maxLength: 8
+          mPARTngth: 8
         userName:
           type: email
           example: email.api@yaml.com
         partyAPIKey:
           type: string
-          maxLength: 255
+          mPARTngth: 255
           example: 68zUNyKoprbKt7ymLN6E/Q==
         MsidsToInsert:
           type: array
@@ -837,9 +892,9 @@ components:
                 description: BMUnitID,GSPGroup,MSIDP,MSIDP,ImportMSID,ImportConsentFlag,ICEFD,ICETD,ExportMSID,ExportConsentFlag,ECEFD,ECETD
             example:
               - Row: "1"
-                Data: V__AFLEX002,_A,02/09/2025,20/10/2025,1800061146877,Y,02/09/2025,20/10/2025,1800061146886,Y,02/09/2025,20/10/2025
+                Data: V__APART002,_A,02/09/2025,20/10/2025,1800061146877,Y,02/09/2025,20/10/2025,1800061146886,Y,02/09/2025,20/10/2025
               - Row: "2"
-                Data: V__AFLEX002,_A,02/09/2025,20/10/2025,1800061146877,Y,02/09/2025,20/10/2025,,,,
+                Data: V__APART002,_A,02/09/2025,20/10/2025,1800061146877,Y,02/09/2025,20/10/2025,,,,
     InsertAmsidsRequest:
       type: object
       required:
@@ -851,13 +906,13 @@ components:
         partyID:
           type: string
           example: ALEXTRCI
-          maxLength: 8
+          mPARTngth: 8
         userName:
           type: email
           example: email.api@yaml.com
         partyAPIKey:
           type: string
-          maxLength: 255
+          mPARTngth: 255
           example: 68zUNyKoprbKt7ymLN6E/Q==
         AmsidsToInsert:
           type: array
@@ -872,9 +927,9 @@ components:
                 description: Asset Registration Id,AMVLP MPID,AMVLP Role,Address Line 1,Address Line 2,Address Line 3,Address Line 4,Address Line 5,Address Line 6,Postcode,GSP Group Id,BM Unit Id,Export AMSID required indicator,Asset type,Asset Voltage,Measurement Transformer Indicator,Asset Capacity,AMSID Pair EFD,AMSID Pair ETD,Measurement Class,Import MSID,Export MSID
             example:
               - Row: "1"
-                Data: NFL0100001,FLEX,AV,ADRESS 1,ADRESS 2,ADRESS 3,ADRESS 4,ADRESS 5,ADRESS 6,KY1 3NW,_M,po,T,Battery Storage,1252,T,123,02/10/2026,31/12/2026,C,2376500474019,1801859241286
+                Data: NFL0100001,PART,AV,ADRESS 1,ADRESS 2,ADRESS 3,ADRESS 4,ADRESS 5,ADRESS 6,KY1 3NW,_M,po,T,Battery Storage,1252,T,123,02/10/2026,31/12/2026,C,2376500474019,1801859241286
               - Row: "2"
-                Data: NFL0100001,FLEX,AV,ADRESS 1,ADRESS 2,ADRESS 3,ADRESS 4,ADRESS 5,ADRESS 6,KY1 3NW,_M,po,F,Battery Storage,1252,F,123,02/10/2026,31/12/2026,C,2376500474019,    
+                Data: NFL0100001,PART,AV,ADRESS 1,ADRESS 2,ADRESS 3,ADRESS 4,ADRESS 5,ADRESS 6,KY1 3NW,_M,po,F,Battery Storage,1252,F,123,02/10/2026,31/12/2026,C,2376500474019,    
     UpdateMSIDETD:
       title: Update MSID ETD
       type: object
@@ -887,13 +942,13 @@ components:
         partyID:
           type: string
           example: ALEXTRCI
-          maxLength: 8
+          mPARTngth: 8
         userName:
           type: email
           example: email.api@yaml.com
         partyAPIKey:
           type: string
-          maxLength: 255
+          mPARTngth: 255
           example: 68zUNyKoprbKt7ymLN6E/Q==
         MsidAmsidsToUpdate:
           type: array
@@ -922,14 +977,14 @@ components:
       properties:
         partyID:
           type: string
-          maxLength: 8
+          mPARTngth: 8
           example: ALEXTRCI
         userName:
           type: email
           example: email.api@yaml.com
         partyAPIKey:
           type: string
-          maxLength: 255
+          mPARTngth: 255
           example: 68zUNyKoprbKt7ymLN6E/Q==
         ConsentFlagsToUpdate:
           type: array
