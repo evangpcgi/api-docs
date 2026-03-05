@@ -773,6 +773,7 @@ components:
         - SVABMUnit
         - effectiveFromDate
         - effectiveToDate
+        - lastModifiedDate
       properties:
         partyID:
           type: string
@@ -802,6 +803,10 @@ components:
           pattern: ^\d{8}$
           example: 01/08/2025
         effectiveToDate:
+          type: string
+          pattern: ^\d{8}$
+          example: 30/08/2025
+        lastModifiedDate:
           type: string
           pattern: ^\d{8}$
           example: 30/08/2025
