@@ -253,7 +253,6 @@ paths:
         3. partyAPIKey * (Key as received in email after requesting party key)
         
         4. MsidsToInsert * (Comma separated values (12))
-        
            - BMUnitID (string (11)) *
            - GSPGroup (string (2)) *
            - Effective From Settlement Date {MSIDP} (DD/MM/YYYY) *
