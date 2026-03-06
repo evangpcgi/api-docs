@@ -253,6 +253,18 @@ paths:
         3. partyAPIKey * (Key as received in email after requesting party key)
 
         4. MsidsToInsert * (Comma separated values (12))
+          - BMUnitID (string (11)) *
+          - GSPGroup (string (2)) *
+          - Effective From Settlement Date {MSIDP} (DD/MM/YYYY) *
+          - Effective To Settlement Date {MSIDP} (DD/MM/YYYY) *
+          - Import MSID (string (13)) *
+          - Import MSID Customer Consent Flag (Y/N) *
+          - Effective From Settlement Date {ICCF} (DD/MM/YYYY) *
+          - Effective To Settlement Date {ICCF} (DD/MM/YYYY) *
+          - Export MSID (string (13))
+          - Export MSID Customer Consent Flag (Y/N)
+          - Effective From Settlement Date {ECCF} (DD/MM/YYYY)
+          - Effective To Settlement Date {ECCF} (DD/MM/YYYY)
 
 
         Comma Separated Values JSON with AMSID Data fields in order (*)mandatory:
@@ -265,6 +277,18 @@ paths:
         3. partyAPIKey * (Key as received in email after requesting party key)
 
         4. AmsidsToInsert *  (Comma separated values (22))
+          - BMUnitID (string (11)) *
+          - GSPGroup (string (18)) *
+          - Effective From Settlement Date {MSIDP} (DD/MM/YYYY) *
+          - Effective To Settlement Date {MSIDP} (DD/MM/YYYY) *
+          - Import MSID (string (13)) *
+          - Import MSID Customer Consent Flag (Y/N) *
+          - Effective From Settlement Date {ICCF} (DD/MM/YYYY) *
+          - Effective To Settlement Date {ICCF} (DD/MM/YYYY) *
+          - Export MSID (13 chars)
+          - Export MSID Customer Consent Flag (Y/N)
+          - Effective From Settlement Date {ECCF} (DD/MM/YYYY)
+          - Effective To Settlement Date {ECCF} (DD/MM/YYYY)
         
       requestBody:
         required: true
@@ -332,8 +356,10 @@ paths:
         3. partyAPIKey * (Key as received in email after requesting party key)
 
         4. MsidAmsidsToUpdate * (Comma separated values (2))
-        
-        
+           - MSIDId (string (18))
+           - EffectiveToSettlementDate (Date (DD/MM/YYYY))
+
+           
         Consent Information
 
         1. partyID * (Party ID as shown in Account Info)
@@ -343,6 +369,11 @@ paths:
         3. partyAPIKey * (Key as received in email after requesting party key)
 
         4. ConsentFlagsToUpdate * (Comma separated values (5))
+          - MSIDId (string (18))
+          - MPAN (string (13))
+          - ConsentFlag (Y/N)
+          - ConsentEffectiveFromDate (Date (DD/MM/YYYY))
+          - FlowDirection (Y/N)
         
       requestBody:
         required: true
