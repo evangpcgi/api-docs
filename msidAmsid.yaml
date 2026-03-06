@@ -126,7 +126,7 @@ paths:
 
         4. msidAmsidRequestID * (Batch request ID from a previous Insert or Update operation)
 
-        5. pendingFlag ** (Filter by status code D, P, S, R)        
+        5. pendingFlag ** (of the AMSID Pair, filter by status code D, P, S, R)
                   
       requestBody:
         required: true
@@ -700,6 +700,7 @@ components:
         userName:
           type: email
           example: email.api@yaml.com
+          maxLength: 255
         partyAPIKey:
           type: string
           maxLength: 255
@@ -722,6 +723,7 @@ components:
         userName:
           type: email
           example: email.api@yaml.com
+          maxLength: 255
         partyAPIKey:
           type: string
           maxLength: 255
@@ -748,6 +750,7 @@ components:
         userName:
           type: email
           example: email.api@yaml.com
+          maxLength: 255
         partyAPIKey:
           type: string
           maxLength: 255
@@ -781,6 +784,7 @@ components:
         userName:
           type: email
           example: email.api@yaml.com
+          maxLength: 255
         partyAPIKey:
           type: string
           maxLength: 255
@@ -824,6 +828,7 @@ components:
         userName:
           type: email
           example: email.api@yaml.com
+          maxLength: 255
         partyAPIKey:
           type: string
           maxLength: 255
@@ -847,6 +852,7 @@ components:
         userName:
           type: email
           example: email.api@yaml.com
+          maxLength: 255
         partyAPIKey:
           type: string
           maxLength: 255
@@ -878,6 +884,7 @@ components:
         userName:
           type: email
           example: email.api@yaml.com
+          maxLength: 255
         partyAPIKey:
           type: string
           maxLength: 255
@@ -913,6 +920,7 @@ components:
         userName:
           type: email
           example: email.api@yaml.com
+          maxLength: 255
         partyAPIKey:
           type: string
           maxLength: 255
@@ -949,6 +957,7 @@ components:
         userName:
           type: email
           example: email.api@yaml.com
+          maxLength: 255
         partyAPIKey:
           type: string
           maxLength: 255
@@ -985,6 +994,7 @@ components:
         userName:
           type: email
           example: email.api@yaml.com
+          maxLength: 255
         partyAPIKey:
           type: string
           maxLength: 255
