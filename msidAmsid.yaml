@@ -277,7 +277,7 @@ paths:
         
         4. AmsidsToInsert *  (Comma separated values (22))
            - Asset Registration Id (string(10))*
-           - AMVLP or Supplier Id  (string(4))*
+           - AMVLP or Supplier (string(4))*
            - AMVLP or Supplier Role (string(2))*
            - Address Line 1 (string(40))*
            - Address Line 2 (string(40))
